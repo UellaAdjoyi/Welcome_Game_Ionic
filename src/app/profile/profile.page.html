@@ -1,0 +1,87 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Profile
+    </ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-menu"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="!loading; else loadingSpinner">
+    <div class="padding">
+      <div class="logo">
+        <ion-icon name="person-circle-outline" color="dark"></ion-icon>
+      </div>
+    </div>
+    <div class="profile-info">
+      <h2>Personal Information</h2>
+      <div class="profile-details">
+        <label>Last name :</label>
+        <span>{{ user?.last_name || 'Non disponible' }}</span>
+      </div>
+      <div class="profile-details">
+        <label>First name :</label>
+        <span>{{ user?.first_name || 'Non disponible' }}</span>
+      </div>
+      <div class="profile-details">
+        <label>Username :</label>
+        <span>{{ user?.username || 'Non disponible' }}</span>
+      </div>
+      <div class="profile-details">
+        <label>Email :</label>
+        <span>{{ user?.email_address || 'Non disponible' }}</span>
+      </div>
+      <div class="profile-details">
+        <label>Phone number :</label>
+        <span>{{ user?.phone_number || 'Non disponible' }}</span>
+      </div>
+      <div class="profile-details">
+        <label>Role :</label>
+        <span>{{ user?.role || 'Non disponible' }}</span>
+      </div>
+      <button class="edit-button" (click)="presentUpdateProfilePopup()">Update<ion-icon
+          name="create-outline"></ion-icon></button>
+    </div>
+
+    <section class="stats-container">
+      <div class="points-section">
+        <h3>
+          <ion-icon class="section-icon" name="trophy"></ion-icon> Score
+        </h3>
+        <div class="points">
+          <p>{{ userPoints }} points</p>
+        </div>
+      </div>
+
+      <div class="friends-section">
+        <h3>
+          <ion-icon class="section-icon" name="people"></ion-icon> Friends
+        </h3>
+        <div class="friends-count">
+          <p>{{ friendsCount }} friends</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <ion-button (click)="goToChecklist()">Check administrative tasks list</ion-button>
+    </section>
+    <section class="logout-section">
+      <button class="logout-button" (click)="logout()">Logout</button>
+    </section>
+
+    <ion-list>
+      <ion-item *ngFor="let task of completedTasks">
+        <ion-label>{{ task.name }}</ion-label>
+      </ion-item>
+    </ion-list>
+
+  </ng-container>
+
+  <ng-template #loadingSpinner>
+    <ion-spinner name="crescent"></ion-spinner>
+  </ng-template>
+</ion-content>

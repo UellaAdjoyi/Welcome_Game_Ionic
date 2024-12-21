@@ -1,0 +1,21 @@
+.about-section {
+  padding: 20px;
+  background-color: #3813f0;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h2,
+h3 {
+  color: #e90f0f;
+}
+
+p {
+  margin-top: 10px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+ion-content {
+  --ion-background-color: white;
+}

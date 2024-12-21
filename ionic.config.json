@@ -1,5 +1,8 @@
 {
   "name": "Welcome_Game",
-  "integrations": {},
+  "integrations": {
+    "cordova": {},
+    "capacitor": {}
+  },
   "type": "angular"
 }

@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="padding">
+    <div class="logo">
+      <ion-icon name="person-circle-outline" color="dark"></ion-icon>
+    </div>
+
+    <form [formGroup]="form">
+      <ion-input label="" formControlName="username" type="text" placeholder="Username"
+        errorText="* Please enter your username">
+        <ion-icon slot="start" color="dark" name="person-outline"></ion-icon>
+      </ion-input>
+
+      <ion-input label="" placeholder="Password" type="password" formControlName="password"
+        errorText="* Please enter your password">
+        <ion-icon slot="start" color="dark" name="key-outline"></ion-icon>
+      </ion-input>
+
+      <ion-item color="transparent" lines="none">
+        <ion-button fill="clear" size="small" slot="end" (click)="goToForgotPassword()">Forgot Password?</ion-button>
+      </ion-item>
+
+      <ion-button fill="outline" shape="round" expand="block" (click)="login()">Log in</ion-button><br>
+      <ion-button color="light" shape="round" expand="block" (click)="goToRegister()">Don't have an account? Sign
+        up</ion-button>
+    </form>
+  </div>
+</ion-content>

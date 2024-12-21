@@ -1,0 +1,18 @@
+<ion-tabs [ngStyle]="{ 'display': shouldDisplayTabs ? 'block' : 'none' }">
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="maps" routerLink="/maps">
+      <ion-icon name="navigate-circle-outline"></ion-icon>
+      <ion-label>Maps</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="friends" routerLink="/friends">
+      <ion-icon name="people-circle-outline"></ion-icon>
+      <ion-label>Friends</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="forum" routerLink="/forum">
+      <ion-icon name="chatbubbles-outline"></ion-icon>
+      <ion-label>Forum</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

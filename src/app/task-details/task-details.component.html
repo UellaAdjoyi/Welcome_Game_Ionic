@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ task.name }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="closeModal()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{ task.description }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <h2>Documents :</h2>
+      <ul>
+        <li *ngFor="let piece of task.pieces">{{ piece }}</li>
+      </ul>
+      <h2>Registration :</h2>
+      <p>
+        <a href="{{ task.registrationUrl }}" target="_blank">Link to registration page</a>
+      </p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
