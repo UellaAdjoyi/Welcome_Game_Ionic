@@ -18,7 +18,7 @@ export class ChecklistPage implements OnInit {
   ];
 
   constructor(
-    private TasksService: TasksService,
+    private tasksService: TasksService,
     private router: Router,
     private alertController: AlertController,
     private inAppBrowser: InAppBrowser,
@@ -30,15 +30,42 @@ export class ChecklistPage implements OnInit {
   }
 
   loadTasks() {
-    this.TasksService.getTasks().subscribe((data) => {
-      this.tasks = data; // Charge toutes les tâches depuis l'API
+    this.tasksService.getTasks().subscribe((tasks) => {
+      this.tasks = tasks;
     });
   }
-  toggleComplete(task: any) {
-    const completed = !task.completed;
-    this.TasksService.updateTaskStatus(task.id, completed).subscribe(() => {
-      task.completed = completed; // Mettez à jour localement l'état de la tâche
-    });
+
+  toggleTaskCompletion(taskId: number) {
+    const task = this.tasks.find((t) => t.id === taskId);
+
+    if (!task) {
+      console.error('Tâche non trouvée');
+      return;
+    }
+
+    const newStatus = !task.completed; // Inverse l'état actuel
+    console.log('Ancien état de la tâche :', task.completed);
+    console.log('Nouvel état calculé :', newStatus);
+
+    this.tasksService.updateTaskCompletion(taskId, newStatus).subscribe(
+      (response) => {
+        console.log("Réponse de l'API :", response);
+        if (response && response.completed !== undefined) {
+          task.completed = response.completed; // Assurez-vous que l'état local reflète la réponse de l'API
+          console.log('État local mis à jour :', task.completed);
+        }
+      },
+      (error) => {
+        console.error('Erreur lors de la mise à jour de la tâche :', error);
+      }
+    );
+  }
+
+  checkAuthentication() {
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      this.router.navigate(['/login']);
+    }
   }
 
   async showGuide(task: any) {

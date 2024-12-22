@@ -1,49 +1,40 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TasksService {
-  private apiUrl = 'http://192.168.0.10:8000/api/tasks';
+  private apiUrl = 'http://192.168.0.10:8000/api';
 
   constructor(private http: HttpClient) {}
 
   getTasks() {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(`${this.apiUrl}/tasks`);
   }
 
-  markTaskComplete(taskId: number) {
-    return this.http.put(`${this.apiUrl}/${taskId}`, { completed: true });
+  updateTaskCompletion(taskId: number, completed: boolean): Observable<any> {
+    const token = localStorage.getItem('auth_token');
+
+    if (!token) {
+      return throwError('User not authenticated');
+    }
+
+    return this.http.put<any>(
+      `${this.apiUrl}/tasks/${taskId}/progress`,
+      { completed: completed }, // Assurez-vous que "completed" est bien inclus ici
+      {
+        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+        withCredentials: true,
+      }
+    );
   }
 
-  unmarkTaskComplete(taskId: number) {
-    return this.http.put(`${this.apiUrl}/${taskId}`, { completed: false });
+  // Service pour récupérer les tâches d'un utilisateur
+  getUserTasks(): Observable<any[]> {
+    const token = localStorage.getItem('auth_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any[]>(`${this.apiUrl}/user/tasks`, { headers });
   }
-
-  getCompletedTasks() {
-    return this.http.get<any[]>(`${this.apiUrl}/completed`);
-  }
-
-  updateTaskStatus(taskId: number, completed: boolean) {
-    return this.http.put(`${this.apiUrl}/${taskId}`, { completed });
-  }
-
-  completedTasks: any[] = [];
-
-  // markTaskComplete(task: any) {
-  //   task.completed = true;
-  //   if (!this.completedTasks.includes(task)) {
-  //     this.completedTasks.push(task);
-  //   }
-  // }
-
-  // unmarkTaskComplete(task: any) {
-  //   task.completed = false;
-  //   this.completedTasks = this.completedTasks.filter((t) => t !== task);
-  // }
-
-  // getCompletedTasks() {
-  //   return this.completedTasks;
-  // }
 }

@@ -36,7 +36,6 @@ export class ProfilePage implements OnInit {
     this.loadProfile();
     this.loadUserPoints();
     this.loadFriendsCount();
-    this.loadCompletedTasks();
 
     this.authService.user$.subscribe((user) => {
       if (user) {
@@ -55,6 +54,10 @@ export class ProfilePage implements OnInit {
   }
 
   async loadProfile() {
+    this.taskService.getTasks().subscribe((tasks) => {
+      this.completedTasks = tasks.filter((task) => task.completed); // Récupère les tâches complétées
+      this.loading = false;
+    });
     try {
       const profile = await this.authService.getProfile().toPromise();
       console.log('User profile loaded:', profile);
@@ -176,12 +179,6 @@ export class ProfilePage implements OnInit {
       error: (error) => {
         console.error('Impossible de charger les amis:', error);
       },
-    });
-  }
-
-  loadCompletedTasks() {
-    this.taskService.getCompletedTasks().subscribe((tasks) => {
-      this.completedTasks = tasks; // Charge uniquement les tâches complétées
     });
   }
 
