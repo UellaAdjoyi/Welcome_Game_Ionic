@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class ForumService {
-  private apiUrl = 'http://192.168.0.10:8000/api';
+  private apiUrl = 'http://192.168.0.9:8000/api';
 
   constructor(private http: HttpClient) {}
 

@@ -6,7 +6,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class FriendsService {
-  private apiUrl = 'http://192.168.0.10:8000/api';
+  private apiUrl = 'http://192.168.0.9:8000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -52,6 +52,13 @@ export class FriendsService {
     return this.http.get<any[]>(`${this.apiUrl}/friends`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
       withCredentials: true,
+    });
+  }
+
+  sendInvitation(email: string, senderName: string) {
+    return this.http.post(`${this.apiUrl}/send-invitation`, {
+      recipient_email: email,
+      sender_name: senderName,
     });
   }
 }

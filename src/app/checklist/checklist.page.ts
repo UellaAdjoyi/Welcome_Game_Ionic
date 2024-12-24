@@ -51,7 +51,7 @@ export class ChecklistPage implements OnInit {
       (response) => {
         console.log("Réponse de l'API :", response);
         if (response && response.completed !== undefined) {
-          task.completed = response.completed; // Assurez-vous que l'état local reflète la réponse de l'API
+          task.completed = response.completed;
           console.log('État local mis à jour :', task.completed);
         }
       },

@@ -6,7 +6,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class TasksService {
-  private apiUrl = 'http://192.168.0.10:8000/api';
+  private apiUrl = 'http://192.168.0.9:8000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -36,5 +36,9 @@ export class TasksService {
     const token = localStorage.getItem('auth_token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<any[]>(`${this.apiUrl}/user/tasks`, { headers });
+  }
+
+  updateTaskStatus(taskId: number, completed: boolean): Observable<any> {
+    return this.http.post(`/tasks/${taskId}/progress`, { completed });
   }
 }

@@ -99,6 +99,8 @@ export class MapsPage implements OnInit, OnDestroy {
                 ? `
               <strong>${event.name}</strong><br>
               <ion-button id="edit-btn-${event.id}">Edit</ion-button>
+              <ion-button id="join-btn-${event.id}">Join</ion-button>
+
             `
                 : `
               <strong>${event.name}</strong><br>
@@ -125,8 +127,7 @@ export class MapsPage implements OnInit, OnDestroy {
       console.error('Error loading events:', error);
 
       const errorToast = await this.toastController.create({
-        message:
-          'Unable to detect your location or load nearby events. Please try again.',
+        message: 'Unable to  load nearby events. Please try again.',
         duration: 5000,
         color: 'danger',
       });
@@ -136,9 +137,8 @@ export class MapsPage implements OnInit, OnDestroy {
 
   async showNoEventsAlert() {
     const alert = await this.alertController.create({
-      header: 'Aucun événement à proximité',
-      message:
-        "Il n'y a pas d'événements à moins de 500 mètres de votre position.",
+      header: 'no nearby events',
+      message: 'There are no nearby events.',
       buttons: ['OK'],
     });
 
@@ -299,6 +299,7 @@ export class MapsPage implements OnInit, OnDestroy {
   async presentCreateEventPopup(lat: number, lng: number) {
     const alert = await this.alertController.create({
       header: 'Add event',
+      cssClass: 'create-event-alert',
       inputs: [
         {
           name: 'name',
@@ -334,7 +335,7 @@ export class MapsPage implements OnInit, OnDestroy {
               console.log('All fields are required.');
               const missingFieldsToast = await this.toastController.create({
                 message: 'All fields are required.',
-                duration: 3000,
+                duration: 2000,
                 color: 'warning',
               });
               await missingFieldsToast.present();
@@ -350,12 +351,8 @@ export class MapsPage implements OnInit, OnDestroy {
               await invalidDatesToast.present();
               return false;
             }
-
-            // Appel à la méthode de création de l'événement
             try {
               await this.createEvent(data, lat, lng);
-
-              // Toast de succès
               const successToast = await this.toastController.create({
                 message: 'Event created successfully!',
                 duration: 5000,

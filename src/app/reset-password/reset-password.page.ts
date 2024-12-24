@@ -11,30 +11,32 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ResetPasswordPage implements OnInit {
   token: string | null = null;
-  email: string = '';
+  email_address: string = '';
   password: string = '';
   passwordConfirmation: string = '';
   message: string = '';
 
-  constructor(private route: ActivatedRoute, private http: HttpClient) {}
+  constructor(private route: ActivatedRoute, private http: HttpClient,private router:Router) {}
 
   ngOnInit() {
     this.token = this.route.snapshot.queryParamMap.get('token');
-    this.email = this.route.snapshot.queryParamMap.get('email') || '';
+    this.email_address = this.route.snapshot.queryParamMap.get('email') || '';
   }
 
   onSubmit() {
     const data = {
       token: this.token,
-      email: this.email,
+      email_address: this.email_address,
       password: this.password,
       password_confirmation: this.passwordConfirmation,
     };
 
     this.http
-      .post('http://127.0.0.1:8000/api/reset-password', data)
+      .post('http://192.168.0.9:8000/api/reset-password', data)
       .subscribe((response: any) => {
         this.message = response.message;
-      });
+    });
+
   }
 }
+ 

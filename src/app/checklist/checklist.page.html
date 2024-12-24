@@ -8,18 +8,22 @@
 </ion-header>
 
 <ion-content>
-  <p>Your administrative tasks</p>
-  <ion-list>
-    <ion-item *ngFor="let task of tasks">
+  <div class="header-description">
+    <h1>Organize Your Administrative Tasks</h1>
+    <p>
+      Track, complete, and access helpful resources for each task. Make administration simple with this interactive checklist.
+    </p>
+  </div>
 
-      <ion-checkbox [(ngModel)]="task.completed" (ionChange)="toggleTaskCompletion(task.id)"
-        slot="start"></ion-checkbox>
+  <ion-list>
+    <ion-item *ngFor="let task of tasks" class="task-item">
+      <ion-checkbox [(ngModel)]="task.completed" (ionChange)="toggleTaskCompletion(task.id)" slot="start"></ion-checkbox>
       <ion-label>
         <h2>{{ task.name }}</h2>
-        <p>{{ task.description }}</p>
+        <p class="task-description">{{ task.description }}</p>
       </ion-label>
-      <ion-button color="secondary" (click)="voirDetails(task)">Details</ion-button>
-      <ion-button color="primary" (click)="showGuide(task)">Guide</ion-button>
+      <ion-button color="secondary" (click)="voirDetails(task)" size="small">Details</ion-button>
+      <ion-button color="primary" (click)="showGuide(task)" size="small">Guide</ion-button>
     </ion-item>
   </ion-list>
 </ion-content>
