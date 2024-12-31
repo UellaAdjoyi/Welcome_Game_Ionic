@@ -36,6 +36,7 @@ export class ProfilePage implements OnInit {
     this.loadProfile();
     this.loadUserPoints();
     this.loadFriendsCount();
+    this.loadCompletedTasks();
 
     this.authService.user$.subscribe((user) => {
       if (user) {
@@ -54,10 +55,6 @@ export class ProfilePage implements OnInit {
   }
 
   async loadProfile() {
-    this.taskService.getTasks().subscribe((tasks) => {
-      this.completedTasks = tasks.filter((task) => task.completed); // Récupère les tâches complétées
-      this.loading = false;
-    });
     try {
       const profile = await this.authService.getProfile().toPromise();
       console.log('User profile loaded:', profile);
@@ -184,5 +181,17 @@ export class ProfilePage implements OnInit {
 
   goToChecklist() {
     this.router.navigate(['/checklist']);
+  }
+
+  loadCompletedTasks() {
+    this.taskService.getCompletedTasks().subscribe(
+      (response) => {
+        console.log(' Completed tasks:', response);
+        this.completedTasks = response;
+      },
+      (error) => {
+        console.error('can t find completed tasks:', error);
+      }
+    );
   }
 }

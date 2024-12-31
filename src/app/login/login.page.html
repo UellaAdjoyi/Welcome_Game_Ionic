@@ -21,12 +21,14 @@
         <ion-icon slot="start" color="dark" name="key-outline"></ion-icon>
       </ion-input>
 
-      <ion-item color="transparent" lines="none">
+      <ion-item color="transparent" lines="none" class="fpass">
         <ion-button fill="clear" size="small" slot="end" (click)="goToForgotPassword()">Forgot Password?</ion-button>
       </ion-item>
 
       <ion-button fill="outline" shape="round" expand="block" (click)="login()">Log in</ion-button><br>
-      <ion-button color="light" shape="round" expand="block" (click)="goToRegister()">Don't have an account? Sign
+      <ion-button color="secondary" shape="round" expand="block" (click)="goToRegister()" class="but">Don't have an
+        account?
+        Sign
         up</ion-button>
     </form>
   </div>

@@ -18,6 +18,8 @@ export class ForumPage implements OnInit {
   posts: any[] = [];
   isAdmin: boolean = false;
   comments: any[] = [];
+  searchQuery: string = '';
+  filteredPosts: any[] = [];
 
   constructor(
     private forumService: ForumService,
@@ -47,6 +49,7 @@ export class ForumPage implements OnInit {
     this.forumService.getPosts().subscribe(
       (data) => {
         this.posts = data;
+        this.filteredPosts = data;
       },
       (error) => {
         console.error('Error loading posts:', error);
@@ -63,6 +66,12 @@ export class ForumPage implements OnInit {
       (error) => {
         console.error('Error finding posts:', error);
       }
+    );
+  }
+
+  filterPosts() {
+    this.filteredPosts = this.posts.filter((post) =>
+      post.title.toLowerCase().includes(this.searchQuery.toLowerCase())
     );
   }
 

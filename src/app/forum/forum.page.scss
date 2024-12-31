@@ -29,3 +29,23 @@
 //     transition: transform 0.2s ease;
 //   }
 // }
+
+
+ion-searchbar {
+  margin: 1rem; /* Ajoute un espace autour de la barre */
+  border-radius: 8px; /* Coins arrondis */
+  // box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2); /* Légère ombre */
+  --background: #ffffff; /* Couleur de fond */
+  --placeholder-color: #030000; /* Couleur du texte de l'espace réservé */
+  --color: #333; /* Couleur du texte */
+  --icon-color: #0b0b0b; /* Couleur de l'icône de recherche */
+}
+
+ion-searchbar input {
+  font-size: 16px; /* Taille du texte dans le champ */
+}
+
+ion-searchbar::part(cancel-button) {
+  color: var(--ion-color-primary); /* Couleur du bouton Annuler */
+  font-weight: bold;
+}

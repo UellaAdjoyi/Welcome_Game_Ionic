@@ -26,39 +26,14 @@ export class ChecklistPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadTasks();
+    this.checkAuthentication();
+    this.loadUserTasks();
   }
 
-  loadTasks() {
+  loadUserTasks() {
     this.tasksService.getTasks().subscribe((tasks) => {
       this.tasks = tasks;
     });
-  }
-
-  toggleTaskCompletion(taskId: number) {
-    const task = this.tasks.find((t) => t.id === taskId);
-
-    if (!task) {
-      console.error('Tâche non trouvée');
-      return;
-    }
-
-    const newStatus = !task.completed; // Inverse l'état actuel
-    console.log('Ancien état de la tâche :', task.completed);
-    console.log('Nouvel état calculé :', newStatus);
-
-    this.tasksService.updateTaskCompletion(taskId, newStatus).subscribe(
-      (response) => {
-        console.log("Réponse de l'API :", response);
-        if (response && response.completed !== undefined) {
-          task.completed = response.completed;
-          console.log('État local mis à jour :', task.completed);
-        }
-      },
-      (error) => {
-        console.error('Erreur lors de la mise à jour de la tâche :', error);
-      }
-    );
   }
 
   checkAuthentication() {
@@ -66,6 +41,15 @@ export class ChecklistPage implements OnInit {
     if (!token) {
       this.router.navigate(['/login']);
     }
+  }
+
+  toggleTaskCompletion(taskId: number, completed: boolean) {
+    this.tasksService.updateTaskCompletion(taskId, completed).subscribe(() => {
+      const taskIndex = this.tasks.findIndex((task) => task.id === taskId);
+      if (taskIndex !== -1) {
+        this.tasks[taskIndex].completed = completed;
+      }
+    });
   }
 
   async showGuide(task: any) {

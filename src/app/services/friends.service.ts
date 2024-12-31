@@ -6,7 +6,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class FriendsService {
-  private apiUrl = 'http://192.168.0.9:8000/api';
+  private apiUrl = 'http://192.168.0.10:8000/api';
 
   constructor(private http: HttpClient) {}
 

@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ForumService } from '../services/forum.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import {
+  AlertController,
+  ModalController,
+  ToastController,
+} from '@ionic/angular';
 @Component({
   selector: 'app-forum-detail',
   templateUrl: './forum-detail.page.html',
@@ -17,7 +21,9 @@ export class ForumDetailPage implements OnInit {
     private route: ActivatedRoute,
     private forumService: ForumService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private toastController: ToastController,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -41,6 +47,8 @@ export class ForumDetailPage implements OnInit {
   }
 
   addComment() {
+    const postId = +this.route.snapshot.paramMap.get('id')!;
+
     if (this.commentForm.invalid) {
       this.commentForm.markAllAsTouched();
       return;
@@ -52,6 +60,7 @@ export class ForumDetailPage implements OnInit {
         (response) => {
           this.comments.push(response);
           this.commentForm.reset();
+          this.loadPost(postId);
         },
         (error) => {
           console.error('Error adding comment :', error);
@@ -59,6 +68,55 @@ export class ForumDetailPage implements OnInit {
       );
   }
 
+  async deleteComment(comment: any) {
+    const postId = +this.route.snapshot.paramMap.get('id')!;
+
+    if (!comment.id) {
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Confirm',
+      message: `Would you like to delete this comment??`,
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+        },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.forumService.deleteComment(comment.id).subscribe({
+              next: () => {
+                console.log('Comment deleted');
+                this.comments = this.comments.filter(
+                  (c) => c.id !== comment.id
+                );
+                this.presentToast('Comment deleted successfully');
+                this.loadPost(postId);
+              },
+              error: (error) => {
+                console.error('Error deleting comment:', error);
+                this.presentToast('Error deleting the comment.');
+              },
+            });
+          },
+        },
+      ],
+    });
+
+    await alert.present();
+  }
+
+  async presentToast(message: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 2000,
+      position: 'bottom',
+    });
+    toast.present();
+  }
   dismiss() {
     this.router.navigate(['/forum']);
   }

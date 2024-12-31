@@ -1,21 +1,86 @@
-.about-section {
+/* Style global pour les pages Help et About */
+.help-page, .about-page {
   padding: 20px;
-  background-color: #3813f0;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
-h2,
-h3 {
-  color: #e90f0f;
+h1 {
+  font-size: 2rem;
+  color: #3880ff;
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #3880ff;
+  margin-top: 20px;
 }
 
 p {
-  margin-top: 10px;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.5;
+  margin-bottom: 15px;
 }
 
-ion-content {
-  --ion-background-color: white;
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ul li {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+ul li strong {
+  font-weight: bold;
+  color: #3880ff;
+}
+
+/* Ajout d'un style pour les titres de sections dans les pages */
+h2 {
+  border-bottom: 2px solid #3880ff;
+  padding-bottom: 5px;
+  margin-bottom: 15px;
+}
+
+/* Style pour le bouton flottant sur la page Help ou About (si nécessaire) */
+.floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #3880ff;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.floating-button ion-icon {
+  color: white;
+  font-size: 2rem;
+}
+
+/* Adaptation pour les petits écrans */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .floating-button {
+    width: 50px;
+    height: 50px;
+  }
 }

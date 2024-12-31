@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LeadearBoardService {
-  private apiUrl = 'http://192.168.0.9:8000/api/leaderboard';
+  private apiUrl = 'http://192.168.0.10:8000/api/leaderboard';
   constructor(private http: HttpClient) {}
 
   getLeaderboard(): Observable<any> {

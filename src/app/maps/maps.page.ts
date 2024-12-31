@@ -360,6 +360,7 @@ export class MapsPage implements OnInit, OnDestroy {
               });
               await successToast.present();
               return true;
+              this.loadEvents(this.userCoords);
             } catch (error) {
               console.error('Error creating event:', error);
 

@@ -6,7 +6,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class TasksService {
-  private apiUrl = 'http://192.168.0.9:8000/api';
+  private apiUrl = 'http://192.168.0.10:8000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -16,29 +16,30 @@ export class TasksService {
 
   updateTaskCompletion(taskId: number, completed: boolean): Observable<any> {
     const token = localStorage.getItem('auth_token');
-
+    console.log('Token récupéré:', token);
     if (!token) {
       return throwError('User not authenticated');
     }
 
-    return this.http.put<any>(
+    console.log('Token used in request:', token);
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.put(
       `${this.apiUrl}/tasks/${taskId}/progress`,
-      { completed: completed }, // Assurez-vous que "completed" est bien inclus ici
-      {
-        headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
-        withCredentials: true,
-      }
+      { completed }, // données de la requête
+      { headers, withCredentials: true } // options
     );
   }
 
-  // Service pour récupérer les tâches d'un utilisateur
-  getUserTasks(): Observable<any[]> {
+  getCompletedTasks(): Observable<any> {
     const token = localStorage.getItem('auth_token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<any[]>(`${this.apiUrl}/user/tasks`, { headers });
-  }
+    if (!token) {
+      return throwError('User not authenticated');
+    }
 
-  updateTaskStatus(taskId: number, completed: boolean): Observable<any> {
-    return this.http.post(`/tasks/${taskId}/progress`, { completed });
+    return this.http.get(`${this.apiUrl}/tasks/completed`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+    });
   }
 }

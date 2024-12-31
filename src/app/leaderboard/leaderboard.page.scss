@@ -1,0 +1,86 @@
+/* Style pour les trois premiers utilisateurs */
+.top-three {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.top-player {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 30%;
+  padding: 10px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.top-player .avatar {
+  width: 80px;
+  height: 80px;
+  background-color: #ddd;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  border: 3px solid #ffcc00; /* Highlight avatar */
+}
+
+.top-player h2 {
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+  font-weight: bold;
+}
+
+.top-player p {
+  margin: 5px 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Liste des autres utilisateurs */
+ion-list {
+  margin-top: 20px;
+}
+
+ion-item {
+  --background: #fff;
+  --border-radius: 8px;
+  margin: 5px 0;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+ion-avatar img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+ion-badge {
+  font-size: 14px;
+  color: #fff;
+  background: #3b82f6;
+}
+
+.logo {
+  height: 250px;
+  position: relative;
+}
+
+.logo ion-icon {
+  position: absolute;
+  font-size: 9em;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+h3{
+  text-align: center;
+
+}

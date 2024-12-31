@@ -65,9 +65,16 @@
         </div>
       </div>
     </section>
+
     <ion-list *ngIf="!loading">
+      <div>
+        <h2> <ion-icon slot="start" name="checkmark-done-outline"></ion-icon>
+          Completed tasks</h2>
+      </div>
       <ion-item *ngFor="let task of completedTasks">
-        <ion-label>{{ task.name }}</ion-label>
+        <ion-label>{{ task.name||'No completed tasks' }}</ion-label>
+        <ion-label>{{ task.description }}</ion-label>
+
       </ion-item>
     </ion-list>
 

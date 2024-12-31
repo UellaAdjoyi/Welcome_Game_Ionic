@@ -78,27 +78,27 @@ ion-list {
   --background: white;
 }
 
-ion-item {
-  background-color: var(--ion-item-background) !important;
-  border-radius: 8px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 0.5rem 0;
-}
+// ion-item {
+//   background-color: var(--ion-item-background) !important;
+//   border-radius: 8px;
+//   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+//   margin: 0.5rem 0;
+// }
 
-ion-item:hover {
-  transform: scale(1.02);
-  transition: transform 0.2s ease;
-}
+// ion-item:hover {
+//   transform: scale(1.02);
+//   transition: transform 0.2s ease;
+// }
 
-/* Personnalisation des boutons */
-ion-button {
-  --background: var(--ion-button-background);
-  --color: var(--ion-button-color);
-}
+// /* Personnalisation des boutons */
+// ion-button {
+//   --background: var(--ion-button-background);
+//   --color: var(--ion-button-color);
+// }
 
-ion-button:hover {
-  --background: var(--ion-button-hover-background);
-}
+// ion-button:hover {
+//   --background: var(--ion-button-hover-background);
+// }
 
 /* Spécificité pour les éléments flottants */
 .floating-button {

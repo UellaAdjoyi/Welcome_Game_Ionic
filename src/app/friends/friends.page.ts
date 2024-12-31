@@ -44,15 +44,16 @@ export class FriendsPage implements OnInit {
 
   async addFriend(userId: number) {
     const user = this.users.find((u) => u.id === userId);
-    if (!user) return;
+    if (!user) {
+      console.error('User not found for ID:', userId);
+      return;
+    }
 
-    const currentUser = this.authService.getCurrentUser();
-    const senderName = currentUser?.name || 'Unknown Sender';
-
-    if (!senderName) {
-      console.error('Error: Sender name is missing.');
+    const recipientEmail = user.email || user.email_address;
+    if (!recipientEmail) {
+      console.error('Recipient email is missing:', user);
       const toast = await this.toastController.create({
-        message: 'Unable to retrieve your name. Please log in again.',
+        message: 'Recipient email is missing.',
         duration: 2000,
         color: 'danger',
       });
@@ -61,13 +62,20 @@ export class FriendsPage implements OnInit {
     }
 
     try {
+      // Récupérez les informations de l'utilisateur actuel
+      const currentUser = await this.authService.getProfile().toPromise();
+      const senderName =
+        currentUser.username ||
+        `${currentUser.first_name} ${currentUser.last_name}` ||
+        'Unknown Sender';
+
       console.log('Sending data:', {
-        recipient_email: user.email,
+        recipient_email: recipientEmail,
         sender_name: senderName,
       });
 
       await this.friendsService
-        .sendInvitation(user.email_address, senderName)
+        .sendInvitation(recipientEmail, senderName)
         .toPromise();
 
       const toast = await this.toastController.create({
@@ -75,15 +83,15 @@ export class FriendsPage implements OnInit {
         duration: 2000,
         color: 'success',
       });
-      toast.present();
+      await toast.present();
     } catch (error) {
       console.error('Error sending friend request:', error);
       const toast = await this.toastController.create({
-        message: `Failed to send friend request. Please try again.`,
+        message: 'Failed to send friend request. Please try again.',
         duration: 2000,
         color: 'danger',
       });
-      toast.present();
+      await toast.present();
     }
   }
 }

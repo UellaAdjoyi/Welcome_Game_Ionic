@@ -23,6 +23,11 @@
           <p>{{ comment.content }}</p>
           <small>{{ comment.created_at }}</small>
         </ion-label>
+        <div>
+          <ion-button (click)="deleteComment(comment)" slot="end">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </div>
       </ion-item>
     </ion-list>
 
