@@ -210,7 +210,7 @@ export class MapsPage implements OnInit, OnDestroy {
       {
         enableHighAccuracy: true,
         maximumAge: 0,
-        timeout: 5000,
+        timeout: 15000,
       }
     );
   }

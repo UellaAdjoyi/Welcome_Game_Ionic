@@ -16,7 +16,11 @@ export class ResetPasswordPage implements OnInit {
   passwordConfirmation: string = '';
   message: string = '';
 
-  constructor(private route: ActivatedRoute, private http: HttpClient,private router:Router) {}
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.token = this.route.snapshot.queryParamMap.get('token');
@@ -32,11 +36,9 @@ export class ResetPasswordPage implements OnInit {
     };
 
     this.http
-      .post('http://192.168.0.9:8000/api/reset-password', data)
+      .post('http://192.168.0.10:8000/api/reset-password', data)
       .subscribe((response: any) => {
         this.message = response.message;
-    });
-
+      });
   }
 }
- 

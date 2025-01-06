@@ -11,43 +11,49 @@ export class FriendsService {
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/users`);
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      return throwError('User not authenticated');
+    }
+    console.log('Token utilisé dans la requête:', token); // Ajoutez un log ici pour vérifier le token
+
+    return this.http.get<any[]>(`${this.apiUrl}/users`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      withCredentials: true,
+    });
   }
 
-  addFriend(userId: number, friendId: number): Observable<any> {
+  aaddFriend(friendId: number): Observable<any> {
     const token = localStorage.getItem('auth_token');
     console.log('Token récupéré:', token);
 
+    // Vérifier si le token existe
     if (!token) {
-      console.error('User not authenticated');
       return throwError('User not authenticated');
     }
 
-    const payload = {
-      user_id: userId,
-      friend_id: friendId,
-    };
+    console.log('Token utilisé dans la requête:', token);
 
-    return this.http
-      .post(`${this.apiUrl}/friends`, payload, {
+    return this.http.post(
+      `${this.apiUrl}/add-friend`,
+      { friend_id: friendId },
+      {
         headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
         withCredentials: true,
-      })
-      .pipe(
-        tap(() => console.log('Friend added successfully')),
-        catchError((error) => {
-          console.error('Error adding friend:', error);
-          return throwError(error);
-        })
-      );
+      }
+    );
   }
 
   getFriends(): Observable<any[]> {
     const token = localStorage.getItem('auth_token');
+    console.log('Token récupéré:', token);
+
+    // Vérifier si le token existe
     if (!token) {
-      console.error('User not authenticated');
       return throwError('User not authenticated');
     }
+
+    console.log('Token utilisé dans la requête:', token);
 
     return this.http.get<any[]>(`${this.apiUrl}/friends`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
@@ -55,10 +61,20 @@ export class FriendsService {
     });
   }
 
-  sendInvitation(email: string, senderName: string) {
-    return this.http.post(`${this.apiUrl}/send-invitation`, {
-      recipient_email: email,
-      sender_name: senderName,
+  getFriendIds(): Observable<number[]> {
+    const token = localStorage.getItem('auth_token');
+    console.log('Token récupéré:', token);
+
+    // Vérifier si le token existe
+    if (!token) {
+      return throwError('User not authenticated');
+    }
+
+    console.log('Token utilisé dans la requête:', token);
+
+    return this.http.get<number[]>(`${this.apiUrl}/friends/ids`, {
+      headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
+      withCredentials: true,
     });
   }
 }

@@ -16,6 +16,20 @@
       <ion-title size="large">Welcome Game</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-list>
+    <ion-list-header>
+      <ion-label>Your Friends</ion-label>
+    </ion-list-header>
+    <ion-item *ngFor="let friend of friends">
+      <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h2>{{ friend.friend.first_name }} {{ friend.friend.last_name }}</h2>
+        <p>{{ friend.friend.email }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
   <ion-list>
     <ion-item *ngFor="let user of users">
       <ion-icon name="person-circle-outline" slot="start"></ion-icon>

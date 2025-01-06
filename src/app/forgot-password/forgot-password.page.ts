@@ -16,7 +16,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   styleUrls: ['./forgot-password.page.scss'],
 })
 export class ForgotPasswordPage implements OnInit {
-  private apiUrl = 'http://192.168.0.9:8000/api/forgot-password';
+  private apiUrl = 'http://192.168.0.10:8000/api/forgot-password';
   form!: FormGroup;
 
   constructor(

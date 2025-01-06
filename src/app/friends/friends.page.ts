@@ -11,6 +11,8 @@ import { ToastController } from '@ionic/angular';
 export class FriendsPage implements OnInit {
   users: any[] = [];
   currentUserId: number = 0;
+  friendIds: number[] = [];
+  friends: any[] = [];
 
   constructor(
     private friendsService: FriendsService,
@@ -19,15 +21,15 @@ export class FriendsPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadCurrentUser();
     this.loadUsers();
+    this.loadCurrentUser();
   }
 
   loadCurrentUser() {
     this.authService.getProfile().subscribe(
       (user) => {
-        console.log('User profile:', user);
-        this.currentUserId = user.id; // Assurez-vous que `id` est bien dans la réponse de l'API.
+        this.currentUserId = user.id;
+        this.loadFriendsAndUsers();
       },
       (error) => {
         console.error('Error loading user profile:', error);
@@ -35,59 +37,56 @@ export class FriendsPage implements OnInit {
     );
   }
 
+  loadFriendsAndUsers() {
+    this.friendsService.getFriends().subscribe(
+      (friends) => {
+        console.log(friends);
+        this.friends = friends;
+        this.friendIds = friends.map((friend) => friend.id);
+
+        this.loadUsers();
+      },
+      (error) => {
+        console.error('Error loading friends:', error);
+      }
+    );
+  }
+
   loadUsers() {
-    this.friendsService.getUsers().subscribe((users) => {
-      // Filtrer les utilisateurs pour exclure l'admin
-      this.users = users.filter((user) => user.role !== 'admin');
-    });
+    this.friendsService.getUsers().subscribe(
+      (users) => {
+        // Filtrer les utilisateurs qui ne sont ni amis ni l'utilisateur actuel
+        this.users = users.filter(
+          (user) =>
+            !this.friendIds.includes(user.id) && user.id !== this.currentUserId
+        );
+      },
+      (error) => {
+        console.error('Error loading users:', error);
+      }
+    );
   }
 
   async addFriend(userId: number) {
-    const user = this.users.find((u) => u.id === userId);
-    if (!user) {
-      console.error('User not found for ID:', userId);
-      return;
-    }
-
-    const recipientEmail = user.email || user.email_address;
-    if (!recipientEmail) {
-      console.error('Recipient email is missing:', user);
-      const toast = await this.toastController.create({
-        message: 'Recipient email is missing.',
-        duration: 2000,
-        color: 'danger',
-      });
-      await toast.present();
-      return;
-    }
-
     try {
-      // Récupérez les informations de l'utilisateur actuel
-      const currentUser = await this.authService.getProfile().toPromise();
-      const senderName =
-        currentUser.username ||
-        `${currentUser.first_name} ${currentUser.last_name}` ||
-        'Unknown Sender';
+      await this.friendsService.aaddFriend(userId).toPromise();
 
-      console.log('Sending data:', {
-        recipient_email: recipientEmail,
-        sender_name: senderName,
-      });
-
-      await this.friendsService
-        .sendInvitation(recipientEmail, senderName)
-        .toPromise();
+      // Mettre à jour les listes après ajout
+      const addedUser = this.users.find((user) => user.id === userId);
+      this.friends.push(addedUser);
+      this.friendIds.push(userId);
+      this.users = this.users.filter((user) => user.id !== userId);
 
       const toast = await this.toastController.create({
-        message: `Friend request sent to ${user.first_name} ${user.last_name}!`,
+        message: 'Friend added successfully!',
         duration: 2000,
         color: 'success',
       });
       await toast.present();
     } catch (error) {
-      console.error('Error sending friend request:', error);
+      console.error('Error adding friend:', error);
       const toast = await this.toastController.create({
-        message: 'Failed to send friend request. Please try again.',
+        message: 'Failed to add friend. Please try again.',
         duration: 2000,
         color: 'danger',
       });

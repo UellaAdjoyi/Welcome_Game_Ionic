@@ -34,7 +34,8 @@ export class AppComponent implements AfterViewInit, OnInit {
           event.urlAfterRedirects === '/login' ||
           event.urlAfterRedirects === '/sign-in' ||
           event.urlAfterRedirects === '/forgot-password' ||
-          event.urlAfterRedirects === '/verify-email'
+          event.urlAfterRedirects === '/verify-email' ||
+          event.urlAfterRedirects === '/reset-password'
         ) {
           this.hideTabs = true; // hide
         } else {
