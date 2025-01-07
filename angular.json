@@ -33,6 +33,7 @@
                 "input": "node_modules/ionicons/dist/ionicons/svg",
                 "output": "./svg"
               }
+
             ],
             "styles": [
               "src/global.scss",
@@ -138,9 +139,17 @@
               "src/**/*.html"
             ]
           }
-        }
-      }
+        },
+        "ionic-cordova-build": {
+  "builder": "@ionic/angular-toolkit:cordova-build",
+  "options": {
+    "cordovaBuildTarget": "app:build",
+    "platform": "android"
+  }
+}
+
     }
+  }
   },
   "cli": {
     "schematicCollections": [

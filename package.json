@@ -1,5 +1,5 @@
 {
-  "name": "Welcome_Game",
+  "name": "welcome_game",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -22,9 +22,9 @@
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
     "@awesome-cordova-plugins/in-app-browser": "^6.12.0",
-    "@capacitor/android": "^6.2.0",
+    "@capacitor/android": "6.2.0",
     "@capacitor/app": "6.0.2",
-    "@capacitor/core": "6.2.0",
+    "@capacitor/core": "^6.2.0",
     "@capacitor/haptics": "6.0.2",
     "@capacitor/ios": "^6.2.0",
     "@capacitor/keyboard": "6.0.3",
@@ -35,7 +35,6 @@
     "@ionic/vue": "^8.4.1",
     "@ionic/vue-router": "^8.4.1",
     "axios": "^1.7.9",
-    "cordova-android": "13.0.0",
     "ionicons": "^7.0.0",
     "leaflet": "^1.9.4",
     "rxjs": "~7.8.0",
@@ -55,11 +54,12 @@
     "@angular/compiler-cli": "^18.0.0",
     "@angular/language-service": "^18.0.0",
     "@capacitor/cli": "6.2.0",
-    "@ionic/angular-toolkit": "^11.0.1",
+    "@ionic/angular-toolkit": "^8.0.0",
     "@types/jasmine": "~5.1.0",
     "@types/leaflet": "^1.9.14",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
+    "cordova-android": "^13.0.0",
     "cordova-plugin-device": "2.0.2",
     "cordova-plugin-inappbrowser": "^6.0.0",
     "cordova-plugin-ionic-keyboard": "^2.0.5",
@@ -92,5 +92,14 @@
     "platforms": [
       "android"
     ]
+  },
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UellaAdjoyi/Welcome_Game_Ionic.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UellaAdjoyi/Welcome_Game_Ionic/issues"
   }
 }
