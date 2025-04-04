@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class EventServiceService {
-  private apiUrl = 'http://192.168.0.10:8000/api';
+  private apiUrl = 'http://127.0.0.1:8000/api';
   private pointsSubject = new BehaviorSubject<number>(0);
   constructor(private http: HttpClient, private authService: AuthService) {}
 

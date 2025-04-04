@@ -93,6 +93,10 @@ const routes: Routes = [
         (m) => m.VerifyEmailPageModule
       ),
   },
+  {
+    path: 'admin-dashboard',
+    loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then( m => m.AdminDashboardPageModule)
+  },
 ];
 
 @NgModule({

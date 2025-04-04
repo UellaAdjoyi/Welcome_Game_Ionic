@@ -1,0 +1,31 @@
+ion-icon{
+  color: black;
+}
+
+ion-card {
+  --background: #f9f9f9;
+  --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+  border-radius: 8px;
+}
+
+ion-card-content {
+  padding: 16px;
+}
+
+ion-select {
+  --background: #ffffff;
+  --border-color: #ddd;
+  --border-radius: 4px;
+  --padding-start: 12px;
+  --padding-end: 12px;
+}
+
+ion-select::part(text) {
+  font-size: 14px;
+  color: #333;
+}
+
+ion-select::part(icon) {
+  color: #007bff;
+}

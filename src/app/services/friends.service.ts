@@ -6,7 +6,7 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class FriendsService {
-  private apiUrl = 'http://192.168.0.10:8000/api';
+  private apiUrl = 'http://127.0.0.1:8000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -15,7 +15,7 @@ export class FriendsService {
     if (!token) {
       return throwError('User not authenticated');
     }
-    console.log('Token utilisé dans la requête:', token); // Ajoutez un log ici pour vérifier le token
+    console.log('Token utilisé dans la requête:', token);
 
     return this.http.get<any[]>(`${this.apiUrl}/users`, {
       headers: new HttpHeaders().set('Authorization', `Bearer ${token}`),
