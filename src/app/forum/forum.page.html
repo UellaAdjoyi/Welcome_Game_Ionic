@@ -27,7 +27,7 @@
           <p>{{ post.content | slice: 0:10 }}...</p>
         </ion-label>
         <ion-button (click)="goToDetail(post.id)" slot="end"> Read more</ion-button>
-        <div *ngIf="isAdmin">
+        <div *ngIf="hasEditPermissions">
           <ion-button (click)="presentUpdatePostPopup(post)"><ion-icon name="create-outline"></ion-icon></ion-button>
           <ion-button (click)="deletePost(post)"><ion-icon name="trash"></ion-icon></ion-button>
         </div>
@@ -37,6 +37,8 @@
     <div>
     </div>
   </ion-content>
+  <ion-button (click)="takePhoto()">Prendre une photo</ion-button>
   <ion-button class="floating-button" (click)="presentCreatePostPopup() ">
     <ion-icon name="add-outline"></ion-icon>
   </ion-button>
+  <!--<img *ngIf="photo" [src]="photo.webPath" />-->

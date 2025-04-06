@@ -7,7 +7,7 @@
       <ion-menu-button menu="main-menu"></ion-menu-button>
     </ion-buttons>
 
-    <ion-label *ngIf="!isAdmin||isAdmin" class="user-points" slot="end">
+    <ion-label *ngIf="hasCreationPermissions" class="user-points" slot="end">
       <span class="points-text">{{ userPoints }}</span>
     </ion-label>
     <ion-icon name="star-half-outline" class="trophy" slot="end"></ion-icon>

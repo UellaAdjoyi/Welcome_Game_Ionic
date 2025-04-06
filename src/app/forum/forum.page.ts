@@ -1,13 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { ForumService } from '../services/forum.service';
 import { AuthService } from '../services/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import {
   AlertController,
   ModalController,
   ToastController,
 } from '@ionic/angular';
-
+import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import {
+  FileTransfer,
+  FileTransferObject,
+} from '@ionic-native/file-transfer/ngx';
+import { FileEntry } from '@ionic-native/file/ngx';
+import { Router } from '@angular/router';
+import { CameraResultType, CameraSource } from '@capacitor/camera';
+import { File } from '@ionic-native/file/ngx';
 @Component({
   selector: 'app-forum',
   templateUrl: './forum.page.html',
@@ -16,33 +23,29 @@ import {
 })
 export class ForumPage implements OnInit {
   posts: any[] = [];
-  isAdmin: boolean = false;
+  hasEditPermissions: boolean = false;
   comments: any[] = [];
   searchQuery: string = '';
   filteredPosts: any[] = [];
+  photo: any = null;
 
   constructor(
     private forumService: ForumService,
     private authService: AuthService,
     private router: Router,
-    private modalCtrl: ModalController,
     private alertController: AlertController,
-    private route: ActivatedRoute,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private camera: Camera,
+    private file: File,
+    private fileTransfer: FileTransfer
   ) {}
 
   ngOnInit() {
     this.loadPosts();
-    this.authService.getProfile().subscribe(
-      (user) => {
-        console.log('User profile loaded:', user);
-        this.isAdmin = user.role === 'admin';
-        console.log('isAdmin:', this.isAdmin);
-      },
-      (error) => {
-        console.error('Error:', error);
-      }
-    );
+    this.authService.getProfile().subscribe((user) => {
+      this.hasEditPermissions =
+        user.role === 'admin' || user.role === 'moderator';
+    });
   }
 
   loadPosts() {
@@ -60,7 +63,7 @@ export class ForumPage implements OnInit {
   loadPost(id: number) {
     this.forumService.getPostById(id).subscribe(
       (data) => {
-        this.posts = data; // Post data
+        this.posts = data;
         this.comments = data.comments || []; // Comments of the post
       },
       (error) => {
@@ -237,4 +240,54 @@ export class ForumPage implements OnInit {
     });
     toast.present();
   }
+
+  //Ajouter une image
+
+  takePhoto() {
+    // Camera.getPhoto({
+    //   resultType: CameraResultType.Uri,
+    //   source: CameraSource.Camera,
+    //   quality: 100,
+    // })
+    //   .then((photo) => {
+    //     this.photo = photo;
+    //   })
+    //   .catch((error) => {
+    //     console.error('Erreur lors de la prise de la photo', error);
+    //   });
+  }
+
+  // selectImage() {
+  //   const options: CameraOptions = {
+  //     quality: 100,
+  //     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+  //     saveToPhotoAlbum: false,
+  //     correctOrientation: true,
+  //   };
+
+  //   this.camera.getPicture(options).then(
+  //     (imagePath) => {
+  //       // Traiter l'image sélectionnée ici
+  //       // this.copyFileToLocalDir(imagePath);
+  //     },
+  //     (err) => {
+  //       console.error("Erreur lors de la sélection de l'image", err);
+  //     }
+  //   );
+  // }
+
+  // private copyFileToLocalDir(imagePath: string) {
+  //   const currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
+  //   const correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
+  //   this.file
+  //     .resolveLocalFilesystemUrl(correctPath + currentName)
+  //     .then((entry: FileEntry) => {
+  //       entry
+  //         .copyTo(this.file.dataDirectory, currentName, { replace: true })
+  //         .then((newEntry) => {
+  //           // L'image est copiée dans le répertoire local de l'application
+  //           // afficher ou 'associer à une publication
+  //         });
+  //     });
+  // }
 }

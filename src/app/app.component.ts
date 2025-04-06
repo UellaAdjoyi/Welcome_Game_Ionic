@@ -51,7 +51,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   ngOnInit() {
     this.authService.getProfile().subscribe(
       (user) => {
-        console.log('User profile loaded:', user);
+        // console.log('User profile loaded:', user);
         this.isAdmin = user.role === 'admin';
         console.log('isAdmin:', this.isAdmin);
       },
@@ -107,7 +107,7 @@ export class AppComponent implements AfterViewInit, OnInit {
   async loadProfile() {
     try {
       const profile = await this.authService.getProfile().toPromise();
-      console.log('User profile loaded:', profile);
+      // console.log('User profile loaded:', profile);
       this.user = profile.user || profile;
       this.loading = false;
     } catch (error) {

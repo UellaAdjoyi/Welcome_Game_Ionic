@@ -20,7 +20,7 @@ export class MapsPage implements OnInit, OnDestroy {
   userMarker: L.Marker | undefined;
   userCoords: [number, number] = [0, 0]; // Initialisation des coordonnées de l'utilisateur
   map: L.Map | undefined;
-  isAdmin: boolean = false;
+  hasCreationPermissions: boolean = false;
   userPoints: number = 0;
   events: any[] = [];
   eventId!: number;
@@ -36,11 +36,9 @@ export class MapsPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.authService.getProfile().subscribe(
       (user) => {
-        console.log('User profile loaded:', user);
-        this.isAdmin = user.role === 'admin';
-        console.log('isAdmin:', this.isAdmin);
-
-        if (!this.isAdmin || this.isAdmin) {
+        // console.log('User profile loaded:', user);
+        this.hasCreationPermissions = user.role === 'admin';
+        if (!this.hasCreationPermissions || this.hasCreationPermissions) {
           this.subscribeToPoints();
           this.eventService.updateUserPoints();
         }
@@ -95,7 +93,7 @@ export class MapsPage implements OnInit, OnDestroy {
           })
             .addTo(this.map!)
             .bindPopup(
-              this.isAdmin
+              this.hasCreationPermissions
                 ? `
               <strong>${event.name}</strong><br>
               <ion-button id="edit-btn-${event.id}">Edit</ion-button>
@@ -108,7 +106,7 @@ export class MapsPage implements OnInit, OnDestroy {
             `
             )
             .on('popupopen', () => {
-              if (this.isAdmin) {
+              if (this.hasCreationPermissions) {
                 document
                   .getElementById(`edit-btn-${event.id}`)
                   ?.addEventListener('click', () => {
@@ -199,7 +197,7 @@ export class MapsPage implements OnInit, OnDestroy {
 
           this.map.setView(this.userCoords, zoomLevel);
 
-          // Chargez les événements uniquement si c'est la première localisation ou si la position a changé significativement
+          // Charger les événements uniquement si c'est la première localisation ou si la position a changé significativement
           this.loadEvents(this.userCoords);
         }
       },
@@ -289,7 +287,7 @@ export class MapsPage implements OnInit, OnDestroy {
   }
 
   onMapClick(lat: number, lng: number) {
-    if (this.isAdmin) {
+    if (this.hasCreationPermissions) {
       this.presentCreateEventPopup(lat, lng);
     } else {
       console.log("Vous n'êtes pas autorisé à créer des événements.");
