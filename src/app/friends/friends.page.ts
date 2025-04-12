@@ -4,9 +4,10 @@ import { AuthService } from '../services/auth.service';
 import { ToastController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-friends',
-  templateUrl: './friends.page.html',
-  styleUrls: ['./friends.page.scss'],
+    selector: 'app-friends',
+    templateUrl: './friends.page.html',
+    styleUrls: ['./friends.page.scss'],
+    standalone: false
 })
 export class FriendsPage implements OnInit {
   users: any[] = [];

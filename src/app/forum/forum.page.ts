@@ -6,15 +6,10 @@ import {
   ModalController,
   ToastController,
 } from '@ionic/angular';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import {
-  FileTransfer,
-  FileTransferObject,
-} from '@ionic-native/file-transfer/ngx';
-import { FileEntry } from '@ionic-native/file/ngx';
+import { Camera } from '@capacitor/camera';
+
 import { Router } from '@angular/router';
 import { CameraResultType, CameraSource } from '@capacitor/camera';
-import { File } from '@ionic-native/file/ngx';
 @Component({
   selector: 'app-forum',
   templateUrl: './forum.page.html',
@@ -37,9 +32,7 @@ export class ForumPage implements OnInit {
     private router: Router,
     private alertController: AlertController,
     private toastController: ToastController,
-    private camera: Camera,
-    private file: File,
-    private fileTransfer: FileTransfer
+    private cameraResulType: CameraResultType
   ) {}
 
   ngOnInit() {
@@ -268,46 +261,31 @@ export class ForumPage implements OnInit {
 
   //Ajouter une image
 
-  takePhoto() {
-    const options: CameraOptions = {
+  async takePhoto() {
+    const image = await Camera.getPhoto({
       quality: 100,
-      sourceType: this.camera.PictureSourceType.CAMERA,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.JPEG,
-      mediaType: this.camera.MediaType.PICTURE,
+      source: CameraSource.Camera,
+      resultType: CameraResultType.DataUrl,
       correctOrientation: true,
-    };
+    });
 
-    this.camera
-      .getPicture(options)
-      .then((imageData) => {
-        this.photo = {
-          name: 'image.jpg',
-          type: 'image/jpeg',
-          data: 'data:image/jpeg;base64,' + imageData,
-        };
-        console.log('Photo taken', this.photo);
-      })
-      .catch((error) => {
-        console.error('Error while taking photo', error);
-      });
+    this.photo = {
+      name: 'image.jpg',
+      type: 'image/jpeg',
+      data: image.dataUrl,
+    };
+    console.log('Photo taken', this.photo);
   }
 
-  selectImage() {
-    const options: CameraOptions = {
+  async selectImage() {
+    const image = await Camera.getPhoto({
       quality: 100,
-      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-      saveToPhotoAlbum: false,
+      source: CameraSource.Photos,
+      resultType: CameraResultType.DataUrl,
       correctOrientation: true,
-    };
+    });
 
-    this.camera.getPicture(options).then(
-      (imagePath) => {
-        this.photos.push(imagePath); // Ajoute l'image sélectionnée au tableau
-      },
-      (err) => {
-        console.error("Erreur lors de la sélection de l'image", err);
-      }
-    );
+    this.photos.push(image.dataUrl); // Ajoute l'image sélectionnée au tableau
+    console.log('Image selected', image);
   }
 }
