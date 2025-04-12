@@ -7,7 +7,7 @@ import { UserProfileResponse } from '../interfaces/user-profile-response';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl = 'http://192.168.0.10:8000/api';
   userPoints: number = 0;
   private user: { is_admin: number; [key: string]: any } = { is_admin: 0 };
   private currentUser: any;

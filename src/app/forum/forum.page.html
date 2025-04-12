@@ -21,24 +21,35 @@
 
   <ion-content>
     <ion-list>
-      <ion-item *ngFor="let post of filteredPosts" [routerLink]="['/forum', post.id]">
+      <ion-item *ngFor="let post of filteredPosts">
         <ion-label>
           <h2>{{ post.title }}</h2>
           <p>{{ post.content | slice: 0:10 }}...</p>
+          <img *ngIf="post.photo" [src]="post.photo" alt="Post Image" />
         </ion-label>
-        <ion-button (click)="goToDetail(post.id)" slot="end"> Read more</ion-button>
-        <div *ngIf="hasEditPermissions">
+        <ion-button (click)="goToDetail(post.id)" slot="end">Read more</ion-button>
+
+        <!-- Afficher les boutons si l'utilisateur est l'auteur du post ou un admin/modérateur -->
+        <div *ngIf="post.userId === userId || hasEditPermissions">
           <ion-button (click)="presentUpdatePostPopup(post)"><ion-icon name="create-outline"></ion-icon></ion-button>
           <ion-button (click)="deletePost(post)"><ion-icon name="trash"></ion-icon></ion-button>
         </div>
       </ion-item>
+
+
     </ion-list>
 
     <div>
     </div>
   </ion-content>
-  <ion-button (click)="takePhoto()">Prendre une photo</ion-button>
-  <ion-button class="floating-button" (click)="presentCreatePostPopup() ">
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
+    <ion-button (click)="takePhoto()">
+      <ion-icon name="camera-outline"></ion-icon>
+    </ion-button>
+    <ion-button (click)="selectImage()">
+      <ion-icon name="images-outline"></ion-icon>
+    </ion-button>
+  </ion-fab>
+  <ion-button class="floating-button" (click)="presentCreatePostPopup()">
     <ion-icon name="add-outline"></ion-icon>
   </ion-button>
-  <!--<img *ngIf="photo" [src]="photo.webPath" />-->

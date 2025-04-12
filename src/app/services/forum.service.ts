@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class ForumService {
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl = 'http://192.168.0.10:8000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -55,5 +55,9 @@ export class ForumService {
 
   deletePost(postId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete-posts/${postId}`);
+  }
+
+  createPostWithImage(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/posts`, formData);
   }
 }
