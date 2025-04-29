@@ -3,11 +3,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
 import { StorageServiceService } from './storage-service.service';
 import { UserProfileResponse } from '../interfaces/user-profile-response';
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl = environment.apiUrl;
   userPoints: number = 0;
   private user: { is_admin: number; [key: string]: any } = { is_admin: 0 };
   private currentUser: any;

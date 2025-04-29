@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
-
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class EventServiceService {
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl = environment.apiUrl;
   private pointsSubject = new BehaviorSubject<number>(0);
   constructor(private http: HttpClient, private authService: AuthService) {}
 
