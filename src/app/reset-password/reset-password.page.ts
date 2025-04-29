@@ -5,9 +5,10 @@ import { ToastController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.page.html',
-  styleUrls: ['./reset-password.page.scss'],
+    selector: 'app-reset-password',
+    templateUrl: './reset-password.page.html',
+    styleUrls: ['./reset-password.page.scss'],
+    standalone: false
 })
 export class ResetPasswordPage implements OnInit {
   token: string | null = null;

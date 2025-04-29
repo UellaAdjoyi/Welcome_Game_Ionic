@@ -6,13 +6,10 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { TabsComponent } from './tabs/tabs.component';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { Browser } from '@capacitor/browser';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TaskDetailsComponent } from './task-details/task-details.component';
-import { Camera } from '@ionic-native/camera/ngx';
-import { FileTransfer } from '@ionic-native/file-transfer/ngx';
-import { File } from '@ionic-native/file/ngx';
-
+import { Camera } from '@capacitor/camera';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular';
 import { ForumDetailPageRoutingModule } from './forum-detail/forum-detail-routing.module';
@@ -32,11 +29,7 @@ import { ForumDetailPage } from './forum-detail/forum-detail.page';
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy,
     },
-    InAppBrowser,
     Storage,
-    Camera,
-    FileTransfer,
-    File,
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

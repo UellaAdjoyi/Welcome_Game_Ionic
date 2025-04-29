@@ -8,9 +8,10 @@ import {
   ToastController,
 } from '@ionic/angular';
 @Component({
-  selector: 'app-forum-detail',
-  templateUrl: './forum-detail.page.html',
-  styleUrls: ['./forum-detail.page.scss'],
+    selector: 'app-forum-detail',
+    templateUrl: './forum-detail.page.html',
+    styleUrls: ['./forum-detail.page.scss'],
+    standalone: false
 })
 export class ForumDetailPage implements OnInit {
   post: any;

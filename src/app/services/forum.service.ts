@@ -57,4 +57,8 @@ export class ForumService {
   deletePost(postId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/delete-posts/${postId}`);
   }
+
+  createPostWithImage(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/posts`, formData);
+  }
 }

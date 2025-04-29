@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
-import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { TasksService } from '../services/tasks.service';
 import { TaskDetailsComponent } from '../task-details/task-details.component';
+import { Browser } from '@capacitor/browser';
 @Component({
   selector: 'app-checklist',
   templateUrl: './checklist.page.html',
   styleUrls: ['./checklist.page.scss'],
+  standalone: false,
 })
 export class ChecklistPage implements OnInit {
   tasks: any[] = [
@@ -20,8 +21,6 @@ export class ChecklistPage implements OnInit {
   constructor(
     private tasksService: TasksService,
     private router: Router,
-    private alertController: AlertController,
-    private inAppBrowser: InAppBrowser,
     private modalController: ModalController
   ) {}
 
@@ -53,8 +52,7 @@ export class ChecklistPage implements OnInit {
   }
 
   async showGuide(task: any) {
-    const browser = this.inAppBrowser.create(task.guideUrl, '_system'); // '_system' ouvre le lien dans le navigateur externe
-    browser.show();
+    await Browser.open({ url: task.guideUrl });
   }
   async voirDetails(task: any) {
     const modal = await this.modalController.create({

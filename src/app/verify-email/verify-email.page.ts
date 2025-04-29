@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-verify-email',
-  templateUrl: './verify-email.page.html',
-  styleUrls: ['./verify-email.page.scss'],
+    selector: 'app-verify-email',
+    templateUrl: './verify-email.page.html',
+    styleUrls: ['./verify-email.page.scss'],
+    standalone: false
 })
 export class VerifyEmailPage implements OnInit {
   token: string | null = null;

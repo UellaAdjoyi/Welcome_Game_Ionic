@@ -8,9 +8,10 @@ interface LeaderboardUser {
 }
 
 @Component({
-  selector: 'app-leaderboard',
-  templateUrl: './leaderboard.page.html',
-  styleUrls: ['./leaderboard.page.scss'],
+    selector: 'app-leaderboard',
+    templateUrl: './leaderboard.page.html',
+    styleUrls: ['./leaderboard.page.scss'],
+    standalone: false
 })
 export class LeaderboardPage implements OnInit {
   leaderboard: any[] = [];

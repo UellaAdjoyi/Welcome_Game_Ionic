@@ -6,15 +6,10 @@ import {
   ModalController,
   ToastController,
 } from '@ionic/angular';
-import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
-import {
-  FileTransfer,
-  FileTransferObject,
-} from '@ionic-native/file-transfer/ngx';
-import { FileEntry } from '@ionic-native/file/ngx';
+import { Camera } from '@capacitor/camera';
+
 import { Router } from '@angular/router';
 import { CameraResultType, CameraSource } from '@capacitor/camera';
-import { File } from '@ionic-native/file/ngx';
 @Component({
   selector: 'app-forum',
   templateUrl: './forum.page.html',
@@ -28,6 +23,8 @@ export class ForumPage implements OnInit {
   searchQuery: string = '';
   filteredPosts: any[] = [];
   photo: any = null;
+  photos: any[] = [];
+  userId: string = '';
 
   constructor(
     private forumService: ForumService,
@@ -35,9 +32,7 @@ export class ForumPage implements OnInit {
     private router: Router,
     private alertController: AlertController,
     private toastController: ToastController,
-    private camera: Camera,
-    private file: File,
-    private fileTransfer: FileTransfer
+    private cameraResulType: CameraResultType
   ) {}
 
   ngOnInit() {
@@ -45,6 +40,7 @@ export class ForumPage implements OnInit {
     this.authService.getProfile().subscribe((user) => {
       this.hasEditPermissions =
         user.role === 'admin' || user.role === 'moderator';
+      this.userId = user.id;
     });
   }
 
@@ -98,7 +94,7 @@ export class ForumPage implements OnInit {
         {
           name: 'content',
           type: 'textarea',
-          placeholder: 'content',
+          placeholder: 'Content',
         },
       ],
       buttons: [
@@ -114,10 +110,24 @@ export class ForumPage implements OnInit {
               console.log('All fields are required.');
               return false;
             }
-            this.forumService.createPost(data).subscribe(
+
+            // Créer un objet FormData pour envoyer les données et l'image
+            const formData = new FormData();
+            formData.append('title', data.title);
+            formData.append('content', data.content);
+
+            if (this.photo) {
+              // Assurez-vous que la photo est ajoutée
+              formData.append('image', this.photo, this.photo.name); // Ajoute l'image à FormData
+            }
+
+            // Envoie la requête avec FormData
+            this.forumService.createPostWithImage(formData).subscribe(
               (response) => {
+                // Réception du post créé avec succès
+                this.posts.push(response.post); // Ajouter le post à la liste locale
+                this.filteredPosts.push(response.post); // Ajouter aussi à filteredPosts si nécessaire
                 this.showToast('Post created successfully!');
-                this.posts.push(response.post); // Mettez à jour la liste localement
               },
               (error) => {
                 console.error('Error creating post:', error);
@@ -143,6 +153,11 @@ export class ForumPage implements OnInit {
   }
 
   async presentUpdatePostPopup(post: any) {
+    if (post.userId !== this.userId && !this.hasEditPermissions) {
+      this.showToast("You don't have permission to edit this post.");
+      return;
+    }
+
     const alert = await this.alertController.create({
       header: 'Update the post',
       inputs: [
@@ -168,7 +183,7 @@ export class ForumPage implements OnInit {
           text: 'Update',
           handler: (data) => {
             const updatedPost = {
-              ...post, // Conserve les propriétés existantes
+              ...post,
               title: data.title,
               content: data.content,
             };
@@ -176,7 +191,6 @@ export class ForumPage implements OnInit {
             this.forumService.updatePost(updatedPost).subscribe(
               (response) => {
                 console.log('Post updated successfully:', response);
-
                 const index = this.posts.findIndex((p) => p.id === post.id);
                 if (index !== -1) {
                   this.posts[index] = updatedPost;
@@ -217,8 +231,12 @@ export class ForumPage implements OnInit {
           handler: () => {
             this.forumService.deletePost(post.id).subscribe({
               next: () => {
-                console.log('Event deleted');
+                console.log('Post deleted');
+                // Supprimer le post de la liste locale
                 this.posts = this.posts.filter((e) => e.id !== post.id);
+                this.filteredPosts = this.filteredPosts.filter(
+                  (e) => e.id !== post.id
+                ); // Si tu filtres les posts
               },
               error: (error) => {
                 console.error('Error:', error);
@@ -243,51 +261,31 @@ export class ForumPage implements OnInit {
 
   //Ajouter une image
 
-  takePhoto() {
-    // Camera.getPhoto({
-    //   resultType: CameraResultType.Uri,
-    //   source: CameraSource.Camera,
-    //   quality: 100,
-    // })
-    //   .then((photo) => {
-    //     this.photo = photo;
-    //   })
-    //   .catch((error) => {
-    //     console.error('Erreur lors de la prise de la photo', error);
-    //   });
+  async takePhoto() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      source: CameraSource.Camera,
+      resultType: CameraResultType.DataUrl,
+      correctOrientation: true,
+    });
+
+    this.photo = {
+      name: 'image.jpg',
+      type: 'image/jpeg',
+      data: image.dataUrl,
+    };
+    console.log('Photo taken', this.photo);
   }
 
-  // selectImage() {
-  //   const options: CameraOptions = {
-  //     quality: 100,
-  //     sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
-  //     saveToPhotoAlbum: false,
-  //     correctOrientation: true,
-  //   };
+  async selectImage() {
+    const image = await Camera.getPhoto({
+      quality: 100,
+      source: CameraSource.Photos,
+      resultType: CameraResultType.DataUrl,
+      correctOrientation: true,
+    });
 
-  //   this.camera.getPicture(options).then(
-  //     (imagePath) => {
-  //       // Traiter l'image sélectionnée ici
-  //       // this.copyFileToLocalDir(imagePath);
-  //     },
-  //     (err) => {
-  //       console.error("Erreur lors de la sélection de l'image", err);
-  //     }
-  //   );
-  // }
-
-  // private copyFileToLocalDir(imagePath: string) {
-  //   const currentName = imagePath.substr(imagePath.lastIndexOf('/') + 1);
-  //   const correctPath = imagePath.substr(0, imagePath.lastIndexOf('/') + 1);
-  //   this.file
-  //     .resolveLocalFilesystemUrl(correctPath + currentName)
-  //     .then((entry: FileEntry) => {
-  //       entry
-  //         .copyTo(this.file.dataDirectory, currentName, { replace: true })
-  //         .then((newEntry) => {
-  //           // L'image est copiée dans le répertoire local de l'application
-  //           // afficher ou 'associer à une publication
-  //         });
-  //     });
-  // }
+    this.photos.push(image.dataUrl); // Ajoute l'image sélectionnée au tableau
+    console.log('Image selected', image);
+  }
 }

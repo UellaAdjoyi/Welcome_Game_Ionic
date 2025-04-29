@@ -6,6 +6,7 @@ import { EventServiceService } from '../services/event-service.service';
 import { Event, Router } from '@angular/router';
 import { FriendsService } from '../services/friends.service';
 import { TasksService } from '../services/tasks.service';
+import { UserProfileResponse } from '../interfaces/user-profile-response';
 
 @Component({
   selector: 'app-profile',
@@ -38,7 +39,7 @@ export class ProfilePage implements OnInit {
     this.loadFriendsCount();
     this.loadCompletedTasks();
 
-    this.authService.user$.subscribe((user) => {
+    this.authService.user$.subscribe((user: UserProfileResponse) => {
       if (user) {
         this.user = user;
       } else {
