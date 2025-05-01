@@ -5,7 +5,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class ForumService {
-  private apiUrl = 'http://192.168.0.10:8000/api';
+  private apiUrl = 'http://127.0.0.1:8000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -58,6 +58,11 @@ export class ForumService {
   }
 
   createPostWithImage(formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/posts`, formData);
+    const token = localStorage.getItem('auth_token');
+    if (!token) {
+      throw new Error('User is not authenticated');
+    }
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(`${this.apiUrl}/create-posts`, formData, { headers });
   }
 }
