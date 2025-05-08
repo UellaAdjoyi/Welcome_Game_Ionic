@@ -6,7 +6,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ForumService {
-  private apiUrl = 'http://192.168.0.10:8000/api';
+  // private apiUrl = 'http://192.168.0.10:8000/api';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

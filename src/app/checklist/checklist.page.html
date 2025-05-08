@@ -16,7 +16,7 @@
     </p>
   </div>
 
-  <ion-list>
+  <!--<ion-list>
     <ion-item *ngFor="let task of tasks" class="task-item">
       <ion-checkbox [(ngModel)]="task.completed" (ionChange)="toggleTaskCompletion(task.id,$event.detail.checked)"
         slot="start"></ion-checkbox>
@@ -27,5 +27,31 @@
       <ion-button color="secondary" (click)="voirDetails(task)" size="small">Details</ion-button>
       <ion-button color="primary" (click)="showGuide(task)" size="small">Guide</ion-button>
     </ion-item>
+  </ion-list>-->
+
+  <ion-list>
+    <ion-item *ngFor="let task of tasks">
+      <ion-label>
+        <h2>{{ task.title }}</h2>
+        <p>{{ task.description }}</p>
+        <a *ngIf="task.link" [href]="task.link" target="_blank">Guide</a>
+      </ion-label>
+      <ion-checkbox
+        slot="end"
+        [checked]="task.completed"
+        (ionChange)="toggleCompleted(task)">
+      </ion-checkbox>
+    </ion-item>
   </ion-list>
+
+  <!-- Bouton for only  admins and mod -->
+  <ion-button
+    expand="block"
+    color="primary"
+    *ngIf="userRole === 'admin' || userRole === 'moderator'"
+    (click)="goToCreateTask()">
+    Create a task
+  </ion-button>
+
+
 </ion-content>

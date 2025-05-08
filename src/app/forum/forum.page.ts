@@ -31,8 +31,7 @@ export class ForumPage implements OnInit {
     private authService: AuthService,
     private router: Router,
     private alertController: AlertController,
-    private toastController: ToastController,
-    private cameraResulType: CameraResultType
+    private toastController: ToastController
   ) {}
 
   ngOnInit() {

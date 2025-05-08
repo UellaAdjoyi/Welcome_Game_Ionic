@@ -1,6 +1,9 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Sign up</ion-title>
+    <ion-title>Create User</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button menu="main-menu"></ion-menu-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -11,42 +14,27 @@
     </div>
 
     <form [formGroup]="form">
-      <ion-input label="" formControlName="email_address" type="email" placeholder="Email address"
-        errorText="* Please enter your email address">
-        <ion-icon slot="start" name="mail-outline" color="dark"></ion-icon>
-      </ion-input>
 
-      <ion-input label="" formControlName="first_name" type="text" placeholder="Fisrt name"
-        errorText="* Please enter your first name">
-        <ion-icon slot="start" color="dark" name="person-outline"></ion-icon>
-      </ion-input>
+      <ion-item>
+        <ion-label position="floating">Login</ion-label>
+        <ion-input formControlName="login" type="text" required></ion-input>
+      </ion-item>
 
-      <ion-input label="" formControlName="last_name" type="text" placeholder="Last name"
-        errorText="* Please enter your last name">
-        <ion-icon slot="start" color="dark" name="person-outline"></ion-icon>
-      </ion-input>
+      <ion-item>
+        <ion-label position="floating">Email</ion-label>
+        <ion-input formControlName="email" type="email" required></ion-input>
+      </ion-item>
 
-      <ion-input label="" formControlName="username" type="text" placeholder="Username"
-        errorText="* Please enter your username">
-        <ion-icon slot="start" color="dark" name="person-outline"></ion-icon>
-      </ion-input>
+      <ion-item>
+        <ion-label position="floating">Rôle</ion-label>
+        <ion-select formControlName="role" required>
+          <ion-select-option value="student">Student</ion-select-option>
+          <ion-select-option value="moderator">Moderator</ion-select-option>
+          <ion-select-option value="admin">Administrator</ion-select-option>
+        </ion-select>
+      </ion-item>
 
-      <ion-input label="" formControlName="phone_number" type="tel" placeholder="Phone Number"
-        errorText="* Please enter your phone number">
-        <ion-icon slot="start" name="phone-portrait-outline" color="dark"></ion-icon>
-      </ion-input>
-
-      <ion-input label="" formControlName="password" type="password" placeholder="Password"
-        errorText="* Please enter your password">
-        <ion-icon slot="start" name="key-outline" color="dark"></ion-icon>
-      </ion-input>
-
-      <ion-button color="light" shape="round" expand="block" type="submit" (click)="onSubmit($event)">Sign
-        up</ion-button>
+      <ion-button expand="full" (click)="createUser()">Créer l'utilisateur</ion-button>
     </form>
-
-    <ion-item color="transparent" lines="none">
-      <ion-button fill="clear" slot="end" (click)="goToLogIn()">Already have an account?</ion-button>
-    </ion-item>
   </div>
 </ion-content>

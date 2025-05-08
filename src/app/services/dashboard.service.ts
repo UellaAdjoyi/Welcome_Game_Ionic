@@ -6,7 +6,10 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class DashboardService {
+/*
   private apiUrl = environment.apiUrl;
+*/
+  private apiUrl = 'http://127.0.0.1:8000/api';
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<any[]> {
@@ -27,5 +30,25 @@ export class DashboardService {
 
   getDashboardStats(): Observable<any> {
     return this.http.get(`${this.apiUrl}/stats`);
+  }
+
+  updateUserStatus(userId: number, is_active: number): Observable<any> {
+    return this.http.put(`${this.apiUrl}/user/users/${userId}/status`, { is_active }, this.getAuthHeader());
+  }
+
+  resetUserPassword(userId: number) {
+/*
+    return this.http.post(`/api/users/${userId}/reset-password`, {});
+*/
+    return this.http.post(`${this.apiUrl}/users/${userId}/reset-password`, {});
+  }
+
+
+  private getAuthHeader() {
+    return {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('auth_token')}`
+      }
+    };
   }
 }

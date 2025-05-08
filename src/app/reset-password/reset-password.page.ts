@@ -11,10 +11,9 @@ import { HttpClient } from '@angular/common/http';
     standalone: false
 })
 export class ResetPasswordPage implements OnInit {
-  token: string | null = null;
-  email_address: string = '';
+  email: string = '';
   password: string = '';
-  passwordConfirmation: string = '';
+  password_confirmation: string = '';
   message: string = '';
 
   constructor(
@@ -24,22 +23,29 @@ export class ResetPasswordPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.token = this.route.snapshot.queryParamMap.get('token');
-    this.email_address = this.route.snapshot.queryParamMap.get('email') || '';
+    /*this.token = this.route.snapshot.queryParamMap.get('token');
+    this.email_address = this.route.snapshot.queryParamMap.get('email') || '';*/
   }
 
   onSubmit() {
     const data = {
-      token: this.token,
-      email_address: this.email_address,
+      email: this.email,
       password: this.password,
-      password_confirmation: this.passwordConfirmation,
+      password_confirmation: this.password_confirmation,
     };
 
     this.http
-      .post('http://192.168.0.10:8000/api/reset-password', data)
-      .subscribe((response: any) => {
-        this.message = response.message;
+      .post('http://127.0.0.1:8000/api/reset-password', data)
+      .subscribe({
+        next: (response: any) => {
+          this.message = response.message;
+          setTimeout(() => {
+            this.router.navigate(['/login']);
+          }, 1000);
+        },
+        error: (err) => {
+          this.message = err.error?.error || 'An error occurred during password reset.';
+        },
       });
   }
 }

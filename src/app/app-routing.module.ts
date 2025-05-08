@@ -3,7 +3,7 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '', // Par défaut, redirige vers la page de connexion
+    path: '',
     redirectTo: 'login',
     pathMatch: 'full',
   },
@@ -65,13 +65,13 @@ const routes: Routes = [
       ),
   },
 
-  {
-    path: 'forgot-password',
+  /*{*/
+    /*path: 'forgot-password',
     loadChildren: () =>
       import('./forgot-password/forgot-password.module').then(
         (m) => m.ForgotPasswordPageModule
       ),
-  },
+  },*/
   {
     path: 'reset-password',
     loadChildren: () =>
@@ -86,16 +86,24 @@ const routes: Routes = [
         (m) => m.LeaderboardPageModule
       ),
   },
-  {
+  /*{
     path: 'verify-email',
     loadChildren: () =>
       import('./verify-email/verify-email.module').then(
         (m) => m.VerifyEmailPageModule
       ),
-  },
+  },*/
   {
     path: 'admin-dashboard',
     loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then( m => m.AdminDashboardPageModule)
+  },
+  {
+    path: 'change-password',
+    loadChildren: () => import('./change-password/change-password.module').then( m => m.ChangePasswordPageModule)
+  },
+  {
+    path: 'task-create',
+    loadChildren: () => import('./task-create/task-create.module').then( m => m.TaskCreatePageModule)
   },
 ];
 

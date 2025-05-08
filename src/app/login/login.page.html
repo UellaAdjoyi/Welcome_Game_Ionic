@@ -11,7 +11,7 @@
     </div>
 
     <form [formGroup]="form">
-      <ion-input label="" formControlName="username" type="text" placeholder="Username"
+      <ion-input label="" formControlName="login" type="text" placeholder="Login"
         errorText="* Please enter your username">
         <ion-icon slot="start" color="dark" name="person-outline"></ion-icon>
       </ion-input>
@@ -26,10 +26,10 @@
       </ion-item>
 
       <ion-button fill="outline" shape="round" expand="block" (click)="login()">Log in</ion-button><br>
-      <ion-button color="secondary" shape="round" expand="block" (click)="goToRegister()" class="but">Don't have an
+<!--      <ion-button color="secondary" shape="round" expand="block" (click)="goToRegister()" class="but">Don't have an
         account?
         Sign
-        up</ion-button>
+        up</ion-button>-->
     </form>
   </div>
 </ion-content>

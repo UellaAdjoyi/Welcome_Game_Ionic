@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { ForumPageRoutingModule } from './forum-routing.module';
 
 import { ForumPage } from './forum.page';
+import { ForumService } from '../services/forum.service';
 
 @NgModule({
   imports: [
@@ -17,5 +18,6 @@ import { ForumPage } from './forum.page';
     ReactiveFormsModule,
   ],
   declarations: [ForumPage],
+  providers: [ForumService],
 })
 export class ForumPageModule {}

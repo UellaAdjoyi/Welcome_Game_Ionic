@@ -5,7 +5,7 @@ import { Observable, BehaviorSubject, throwError, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://192.168.0.10:8000/api';
+  private apiUrl = 'http://127.0.0.1:8000/api';
   userPoints: number = 0;
   private user: { is_admin: number; [key: string]: any } = { is_admin: 0 };
   private currentUser: any;
@@ -21,9 +21,10 @@ export class AuthService {
     }
   }
 
-  register(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, data);
+  createUser(data: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/users`, data);
   }
+
   login(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, data);
   }
@@ -41,32 +42,39 @@ export class AuthService {
     });
   }
 
-  isAdmin(): boolean {
+  /*isAdmin(): boolean {
     return this.user && this.user.is_admin === 1;
-  }
+  }*/
 
   updateProfile(data: any) {
-    return this.http.put(`${this.apiUrl}/updateProfile`, data, {
+    return this.http.put(`${this.apiUrl}/user/profile-picture`, data, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem('auth_token')}`,
       },
     });
   }
 
-  generateResetCode(email: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/generate-reset-code`, {
-      email_address: email,
+  uploadProfilePicture(file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post(`${this.apiUrl}/user/upload-profile-picture`, formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('auth_token') || ''}`
+      }
     });
   }
 
-  resetPassword(data: {
-    email_address: string;
-    code: string;
-    password: string;
-    password_confirmation: string;
-  }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/reset-password`, data);
+
+  changePassword(data: { current_password: string, new_password: string }) {
+    return this.http.post(`${this.apiUrl}/change-password`, data, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('auth_token') || ''}`,
+      }
+    });
   }
+
+
 
   logout(): Observable<any> {
     const token = localStorage.getItem('auth_token');

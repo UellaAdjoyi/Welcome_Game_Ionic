@@ -1,5 +1,5 @@
 <ion-app>
-  <!-- Menu latéral -->
+
   <ion-menu menuId="main-menu" contentId="main">
     <ion-header>
       <ion-toolbar color="primary">
@@ -7,13 +7,29 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content>
+    <ion-content  *ngIf="user">
       <div class="menu-header-bg">
         <div class="header-content">
-          <ion-icon class="logo" name="person-circle-outline" size="large"></ion-icon>
+          <img
+            *ngIf="user?.profile_picture; else noImage"
+            [src]="getImageUrl(user.profile_picture)"
+            class="profile-img profile-click"
+            (click)="openFileChooser()"  alt="user profile"/>
+
+          <ng-template #noImage>
+            <ion-icon
+              class="logo profile-click"
+              name="person-circle-outline"
+              size="large"
+              (click)="openFileChooser()">
+            </ion-icon>
+          </ng-template>
+
+          <input type="file" #fileInput accept="image/*" hidden (change)="onFileSelected($event)" />
+
           <div class="profile-details">
-            <span>{{ user?.first_name || 'Unavailable' }}</span>&nbsp;
-            <span>{{ user?.last_name || 'Unavailable ' }}</span>
+            <span>{{ user?.email || 'Unavailable' }}</span>&nbsp;
+            <span>{{ user?.role || 'Unavailable ' }}</span>
           </div>
         </div>
       </div>

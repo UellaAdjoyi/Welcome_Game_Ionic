@@ -8,39 +8,59 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h1>Utilisateurs</h1>
-  <ion-list>
-    <ion-item *ngFor="let user of users">
-      <ion-label>
-        <h2>{{ user.first_name }} {{ user.last_name }}</h2>
 
+  <h1>Manage Users </h1>
+
+  <!-- Search bar -->
+  <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterUsers()" placeholder="Search user"></ion-searchbar>
+
+  <ion-list>
+    <ion-item *ngFor="let user of filteredUsers">
+      <ion-label class="ion-text-wrap">
+        <h2>{{ user.email }} ({{ user.role }})</h2>
+        <p *ngIf="user.is_active" style="color:red;">Account disabled</p>
       </ion-label>
-      <ion-select [(ngModel)]="user.role" (ionChange)="modifierRole(user.id, user.role)">
-        <ion-select-option value="user">Utilisateur</ion-select-option>
-        <ion-select-option value="moderator">Modérateur</ion-select-option>
-        <ion-select-option value="admin">Administrateur</ion-select-option>
+
+      <!-- Rôle -->
+      <ion-select [(ngModel)]="user.role" interface="popover" (ionChange)="modifierRole(user.id, user.role)">
+        <ion-select-option value="user">User</ion-select-option>
+        <ion-select-option value="moderator">Moderator</ion-select-option>
+        <ion-select-option value="admin">Administrator</ion-select-option>
       </ion-select>
+
+      <!-- Activation -->
+      <ion-toggle [(ngModel)]="user.is_active" (ionChange)="changerStatut(user.id, user.is_active)" slot="end" color="success">
+      </ion-toggle>
+
+      <!-- change password -->
+      <ion-button fill="clear" size="small" (click)="changePassword(user)" color="warning">
+        <ion-icon name="key-outline"></ion-icon>
+      </ion-button>
     </ion-item>
   </ion-list>
-  <!-- Affichage des statistiques -->
-  <h1>Statistiques</h1>
-  <ion-card>
-    <ion-card-content>
-      <p><strong>Nombre total d'utilisateurs :</strong> {{ stats.totalUsers }}</p>
-    </ion-card-content>
-  </ion-card>
 
   <ion-card>
+    <ion-card-header>
+      <ion-card-title>Stats</ion-card-title>
+    </ion-card-header>
     <ion-card-content>
-      <p><strong>Nombre total de publications :</strong> {{ stats.totalPosts }}</p>
+      <p><strong>Total Users :</strong> {{ stats.totalUsers }}</p>
+      <p><strong>Total posts :</strong> {{ stats.totalPosts }}</p>
+      <p><strong>Events :</strong> {{ stats.totalEvents }}</p>
     </ion-card-content>
+
+    <ion-item *ngFor="let task of taskStats">
+      <ion-label>
+        <h2>{{ task.title }}</h2>
+        <p>{{ task.description }}</p>
+        <p><strong>Completed for :</strong> {{ task.completed_count }} users</p>
+        <p><strong>percetange :</strong> {{ task.completion_rate }}%</p>
+      </ion-label>
+    </ion-item>
   </ion-card>
 
-  <ion-card>
-    <ion-card-content>
-      <p><strong>Nombre total d'événements :</strong> {{ stats.totalEvents }}</p>
-    </ion-card-content>
-  </ion-card>
-
+  <ion-button expand="block" color="primary" (click)="goToCreateUser()">
+    Create new user
+  </ion-button>
 
 </ion-content>

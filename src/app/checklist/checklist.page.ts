@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, ModalController } from '@ionic/angular';
+import {AlertController, ModalController, ToastController} from '@ionic/angular';
 import { TasksService } from '../services/tasks.service';
-import { TaskDetailsComponent } from '../task-details/task-details.component';
-import { Browser } from '@capacitor/browser';
+import {Task} from "../interfaces/task";
+
 @Component({
   selector: 'app-checklist',
   templateUrl: './checklist.page.html',
@@ -11,55 +11,53 @@ import { Browser } from '@capacitor/browser';
   standalone: false,
 })
 export class ChecklistPage implements OnInit {
-  tasks: any[] = [
-    // { name: 'VLS-TS', description: 'Visa long séjour temporaire' },
-    // { name: 'Bank', description: 'Ouverture d’un compte bancaire' },
-    // { name: 'Ameli', description: 'Inscription à la sécurité sociale' },
-    // { name: 'Caf', description: 'Inscription à la CAF' }
-  ];
+  tasks: any[] = [];
+  completedTaskIds: number[] = [];
+  userRole: string = '';
+
 
   constructor(
     private tasksService: TasksService,
     private router: Router,
-    private modalController: ModalController
+    private toastCtrl: ToastController,
   ) {}
 
   ngOnInit() {
+/*
     this.checkAuthentication();
+*/
     this.loadUserTasks();
+    this.userRole = localStorage.getItem('user_role') || '';
+
   }
 
   loadUserTasks() {
-    this.tasksService.getTasks().subscribe((tasks) => {
+    this.tasksService.loadTasks().subscribe((tasks) => {
       this.tasks = tasks;
     });
+    this.tasksService.getCompletedTaskIds().subscribe(ids => this.completedTaskIds = ids);
+
   }
 
-  checkAuthentication() {
-    const token = localStorage.getItem('auth_token');
-    if (!token) {
-      this.router.navigate(['/login']);
-    }
+  isCompleted(taskId: number): boolean {
+    return this.completedTaskIds.includes(taskId);
   }
 
-  toggleTaskCompletion(taskId: number, completed: boolean) {
-    this.tasksService.updateTaskCompletion(taskId, completed).subscribe(() => {
-      const taskIndex = this.tasks.findIndex((task) => task.id === taskId);
-      if (taskIndex !== -1) {
-        this.tasks[taskIndex].completed = completed;
+
+
+  toggleCompleted(taskId: number) {
+    this.tasksService.toggleCompleted(taskId).subscribe(async () => {
+      if (this.isCompleted(taskId)) {
+        this.completedTaskIds = this.completedTaskIds.filter(id => id !== taskId);
+        this.loadUserTasks()
+      } else {
+        this.completedTaskIds.push(taskId);
       }
     });
   }
 
-  async showGuide(task: any) {
-    await Browser.open({ url: task.guideUrl });
+  goToCreateTask() {
+    this.router.navigate(['/task-create']);
   }
-  async voirDetails(task: any) {
-    const modal = await this.modalController.create({
-      component: TaskDetailsComponent,
-      componentProps: { task },
-    });
 
-    return await modal.present();
-  }
 }

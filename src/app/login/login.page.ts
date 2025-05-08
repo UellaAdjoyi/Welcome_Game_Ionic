@@ -22,7 +22,7 @@ export class LoginPage implements OnInit {
 
   initForm() {
     this.form = new FormGroup({
-      username: new FormControl(null, {
+      login: new FormControl(null, {
         validators: [Validators.required],
       }),
       password: new FormControl(null, {
@@ -39,11 +39,7 @@ export class LoginPage implements OnInit {
     this.initForm();
   }
 
-  goToRegister() {
-    if (this.router.url !== '/sign-in') {
-      this.router.navigate(['/sign-in']);
-    }
-  }
+
 
   onLogin() {
     this.router.navigate(['/home']);
@@ -55,7 +51,7 @@ export class LoginPage implements OnInit {
     }
 
     const loginData = {
-      username: this.form.value.username,
+      login: this.form.value.login,
       password: this.form.value.password,
     };
 
@@ -65,11 +61,19 @@ export class LoginPage implements OnInit {
       if (response?.token) {
         // Save the token to localStorage
         localStorage.setItem('auth_token', response.token);
+        localStorage.setItem('user_email', response.user.email);
+        localStorage.setItem('user_role', response.user.role);
         console.log(
           'Token stored in localStorage:',
           localStorage.getItem('auth_token')
         );
-        this.router.navigate(['/home']); // Redirect after successful login
+
+        const mustChange = response.user?.must_change_password;
+        if (mustChange) {
+          this.router.navigate(['/change-password']);
+        } else {
+          this.router.navigate(['/home']);
+        }
       } else {
         this.showToast('Login failed. Please try again.');
       }
@@ -89,6 +93,6 @@ export class LoginPage implements OnInit {
   }
 
   goToForgotPassword() {
-    this.router.navigate(['/forgot-password']);
+    this.router.navigate(['/reset-password']);
   }
 }

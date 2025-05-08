@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import {
   AlertController,
@@ -29,13 +29,11 @@ export class AppComponent implements AfterViewInit, OnInit {
   ) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        console.log('Current route:', event.urlAfterRedirects); // Vérifie l'URL actuelle
+        console.log('Current route:', event.urlAfterRedirects);
 
         if (
           event.urlAfterRedirects === '/login' ||
           event.urlAfterRedirects === '/sign-in' ||
-          event.urlAfterRedirects === '/forgot-password' ||
-          event.urlAfterRedirects === '/verify-email' ||
           event.urlAfterRedirects === '/reset-password'
         ) {
           this.hideTabs = true; // hide
@@ -50,17 +48,16 @@ export class AppComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    this.authService.getProfile().subscribe(
-      (user) => {
-        // console.log('User profile loaded:', user);
-        this.isAdmin = user.role === 'admin';
-        console.log('isAdmin:', this.isAdmin);
-      },
-      (error) => {
-        console.error('Error:', error);
-      }
-    );
-    this.loadProfile();
+    const email = localStorage.getItem('user_email');
+    const role = localStorage.getItem('user_role');
+    if (email && role) {
+      this.user = { email, role };
+      this.isAdmin = role === 'admin';
+    } else {
+      this.user = null;
+      this.isAdmin = false;
+    }
+  console.log(this.user);
   }
 
   closeMenu() {
@@ -74,9 +71,9 @@ export class AppComponent implements AfterViewInit, OnInit {
     const tabBar = document.querySelector('ion-tab-bar');
     if (tabBar) {
       if (this.hideTabs) {
-        tabBar.classList.add('hide-tabs'); // Ajouter la classe pour masquer la tab bar
+        tabBar.classList.add('hide-tabs');
       } else {
-        tabBar.classList.remove('hide-tabs'); // Retirer la classe pour afficher la tab bar
+        tabBar.classList.remove('hide-tabs');
       }
     }
   }
@@ -89,11 +86,15 @@ export class AppComponent implements AfterViewInit, OnInit {
   logout() {
     this.authService.logout().subscribe({
       next: (response) => {
-        console.log('Déconnecté avec succès', response);
+        localStorage.removeItem('auth_token');
+        localStorage.removeItem('user_email');
+        localStorage.removeItem('user_role');
+        console.log('user logout successfully', response);
+
         this.router.navigate(['/login']);
       },
       error: (error) => {
-        console.error('Erreur lors de la déconnexion', error);
+        console.error('Error', error);
       },
     });
   }
@@ -116,4 +117,43 @@ export class AppComponent implements AfterViewInit, OnInit {
       this.loading = false;
     }
   }
+
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
+  selectedFile: File | null = null;
+
+  openFileChooser() {
+    this.fileInput.nativeElement.click();
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      this.authService.uploadProfilePicture(file).subscribe({
+        next: (res) => {
+          if (res && res.profile_picture) {
+            this.user.profile_picture = res.profile_picture;
+            localStorage.setItem('user', JSON.stringify(this.user));
+          }
+        },
+        error: (err) => {
+          console.error("Erreur lors de l'upload :", err);
+        }
+      });
+    }
+  }
+
+  /*getImageUrl(path: string): string {
+    const  imageUrl=`http://127.0.0.1:8000/${path}`
+    console.log(imageUrl);
+    return imageUrl;
+  }*/
+  getImageUrl(path: string): string {
+    console.log('Path:', path);  // Vérifie si le path est défini avant d'essayer de générer l'URL
+    const imageUrl = `http://127.0.0.1:8000/${path}`;
+    console.log('Generated Image URL:', imageUrl);  // Vérifie l'URL générée
+    return imageUrl;
+  }
+
+
 }
