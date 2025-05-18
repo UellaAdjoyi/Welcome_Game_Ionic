@@ -6,10 +6,8 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class DashboardService {
-/*
   private apiUrl = environment.apiUrl;
-*/
-  private apiUrl = 'http://127.0.0.1:8000/api';
+
   constructor(private http: HttpClient) {}
 
   getUsers(): Observable<any[]> {

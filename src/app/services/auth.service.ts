@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError, tap } from 'rxjs';
+import {environment} from "../../environments/environment";
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://127.0.0.1:8000/api';
+  private apiUrl = environment.apiUrl;
   userPoints: number = 0;
   private user: { is_admin: number; [key: string]: any } = { is_admin: 0 };
   private currentUser: any;
@@ -25,9 +26,23 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/users`, data);
   }
 
-  login(data: any): Observable<any> {
+  /*login(data: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, data);
+  }*/
+  login(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
+      tap(response => {
+        //  token
+        localStorage.setItem('auth_token', response.token);
+
+        // Users data
+        if (response.user) {
+          localStorage.setItem('user', JSON.stringify(response.user));
+        }
+      })
+    );
   }
+
 
   getProfile(): Observable<any> {
     const token = localStorage.getItem('auth_token');
@@ -42,9 +57,6 @@ export class AuthService {
     });
   }
 
-  /*isAdmin(): boolean {
-    return this.user && this.user.is_admin === 1;
-  }*/
 
   updateProfile(data: any) {
     return this.http.put(`${this.apiUrl}/user/profile-picture`, data, {
@@ -101,17 +113,12 @@ export class AuthService {
   private userSubject = new BehaviorSubject<any>(null);
   user$ = this.userSubject.asObservable();
 
-  updateUser(user: any) {
-    this.userSubject.next(user);
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/deleteUsers/${id}`);
   }
 
-  getUser() {
-    return this.userSubject.value;
-  }
 
-  setCurrentUser(user: any) {
-    this.currentUser = user;
-  }
+
 
   getCurrentUser() {
     return this.currentUser;

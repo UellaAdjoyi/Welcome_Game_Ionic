@@ -23,8 +23,9 @@ export class LeaderboardPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadLeaderboard();
-  }
+    this.leaderboardService.getLeaderboard().subscribe(data => {
+      this.leaderboard = data;
+    });  }
 
   loadLeaderboard() {
     this.leaderboardService.getLeaderboard().subscribe(

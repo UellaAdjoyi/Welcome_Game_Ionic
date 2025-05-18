@@ -9,9 +9,12 @@ export class LeadearBoardService {
   private apiUrl = environment.apiUrl;
   constructor(private http: HttpClient) {}
 
-  getLeaderboard(): Observable<any> {
+  getLeaderboard():Observable<any[]> {
     const token = localStorage.getItem('auth_token');
+    if (!token) {
+      throw new Error('User is not authenticated');
+    }
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get(this.apiUrl, { headers });
+    return this.http.get<any[]>(`${this.apiUrl}/leaderboard`, { headers });
   }
 }

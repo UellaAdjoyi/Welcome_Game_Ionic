@@ -8,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { ToastController } from '@ionic/angular';
+import {NavController, ToastController} from '@ionic/angular';
 
 
 @Component({
@@ -27,19 +27,6 @@ export class SignInPage {
       }),
       login: new FormControl(null, { validators: [Validators.required] }),
       role: new FormControl(null, { validators: [Validators.required] }),
-/*
-      username: new FormControl(null, { validators: [Validators.required] }),
-*/
-      /*phone_number: new FormControl(null, {
-        validators: [
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(10),
-        ],
-      }),*/
-      /*password: new FormControl(null, {
-        validators: [Validators.required, Validators.minLength(8)],
-      }),*/
     });
   }
 
@@ -47,7 +34,8 @@ export class SignInPage {
     private router: Router,
     private http: HttpClient,
     private authService: AuthService,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private navCtrl: NavController,
   ) {
     this.initForm();
   }
@@ -97,11 +85,10 @@ export class SignInPage {
 
     try {
       const response = await this.authService.createUser(userData).toPromise();
-      console.log('Utilisateur créé avec succès');
-      this.showToast('Utilisateur créé et email envoyé.');
+      console.log('User created successfully', response);
+      this.showToast('User created and email sent successfully. Redirecting to home page.. ');
     } catch (error) {
-      console.error('Erreur lors de la création', error);
-      this.showToast('Erreur lors de la création de l’utilisateur.');
+      this.showToast('Error creating user. Please verify the email address and try again.');
     }
   }
 
@@ -112,5 +99,8 @@ export class SignInPage {
       color: 'danger'
     });
     toast.present();
+  }
+  cancel() {
+    this.navCtrl.back();
   }
 }

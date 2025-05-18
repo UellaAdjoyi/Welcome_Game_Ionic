@@ -57,11 +57,12 @@ export class AppComponent implements AfterViewInit, OnInit {
       this.user = null;
       this.isAdmin = false;
     }
-  console.log(this.user);
+    this.loadProfile();
+    console.log(this.user);
   }
 
   closeMenu() {
-    this.menuController.close('main-menu'); // Ferme le menu ayant l'ID "main-menu"
+    this.menuController.close('main-menu');
   }
   ngAfterViewInit() {
     this.updateTabVisibility();
@@ -109,7 +110,6 @@ export class AppComponent implements AfterViewInit, OnInit {
   async loadProfile() {
     try {
       const profile = await this.authService.getProfile().toPromise();
-      // console.log('User profile loaded:', profile);
       this.user = profile.user || profile;
       this.loading = false;
     } catch (error) {
@@ -143,17 +143,11 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
   }
 
-  /*getImageUrl(path: string): string {
-    const  imageUrl=`http://127.0.0.1:8000/${path}`
-    console.log(imageUrl);
-    return imageUrl;
-  }*/
+
   getImageUrl(path: string): string {
-    console.log('Path:', path);  // Vérifie si le path est défini avant d'essayer de générer l'URL
-    const imageUrl = `http://127.0.0.1:8000/${path}`;
-    console.log('Generated Image URL:', imageUrl);  // Vérifie l'URL générée
-    return imageUrl;
+    return `http://127.0.0.1:8000/${path}`;
   }
+
 
 
 }

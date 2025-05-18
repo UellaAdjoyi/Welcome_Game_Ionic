@@ -12,8 +12,6 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
 import { Camera } from '@capacitor/camera';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Storage } from '@ionic/storage-angular';
-import { ForumDetailPageRoutingModule } from './forum-detail/forum-detail-routing.module';
-import { ForumDetailPage } from './forum-detail/forum-detail.page';
 @NgModule({
   declarations: [AppComponent, TabsComponent, TaskDetailsComponent],
   imports: [

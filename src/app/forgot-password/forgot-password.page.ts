@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { AlertController, ToastController } from '@ionic/angular';
+import {AlertController, ModalController, NavController, ToastController} from '@ionic/angular';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -23,7 +23,8 @@ export class ForgotPasswordPage implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private navCtrl: NavController,
   ) {}
 
   ngOnInit() {
@@ -62,5 +63,9 @@ export class ForgotPasswordPage implements OnInit {
         await toast.present();
       }
     );
+  }
+
+  cancel() {
+    this.navCtrl.back();
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {TasksService} from "../services/tasks.service";
 import {Router} from "@angular/router";
-import {IonicModule, ToastController} from "@ionic/angular";
+import {IonicModule, ModalController, NavController, ToastController} from "@ionic/angular";
 import {Task} from "../interfaces/task";
 import {FormsModule} from "@angular/forms";
 
@@ -26,7 +26,9 @@ export class TaskCreatePage {
   constructor(
     private tasksService: TasksService,
     private router: Router,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private navCtrl: NavController,
+
   ) {}
 
   async createTask() {
@@ -50,5 +52,9 @@ export class TaskCreatePage {
         console.error(err);
       },
     });
+  }
+
+  cancel() {
+    this.navCtrl.back();
   }
 }

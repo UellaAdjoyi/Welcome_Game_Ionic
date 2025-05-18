@@ -1,0 +1,108 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Forum Articles</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Description of feed -->
+  <ion-card *ngIf="ForumFeed" class="ion-margin-bottom custom-card-description">
+    <ion-card-header>
+      <ion-card-title>{{ ForumFeed.title }}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{ ForumFeed.description }}</p>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Articles -->
+  <ng-container *ngIf="articles.length > 0; else noArticle">
+    <ion-card *ngFor="let article of articles"  class="ion-margin-bottom custom-card">
+      <ion-card-header>
+        <ion-card-title>{{ article.title }}</ion-card-title>
+        <ion-card-subtitle *ngIf="article.user">By <strong>{{ article.user.login }}</strong></ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p>{{ article.forum_content }}</p>
+
+        <!-- Media -->
+        <div *ngIf="article.media" class="ion-text-center ion-margin-vertical">
+          <img
+            [src]="'http://127.0.0.1:8000/storage/' + article.media"
+            alt=""
+            style="width: 100%; max-width: 300px; border-radius: 10px; object-fit: cover;"
+          />
+        </div>
+
+        <!-- Delete/Edit article -->
+        <ion-buttons
+          *ngIf="user && (user.id === article.user_id || user.role === 'admin' || user.role === 'moderator')"
+          class="ion-justify-content-end ion-margin-bottom">
+          <ion-button size="small" color="primary" (click)="editArticle(article)">
+            <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+          </ion-button>
+          <ion-button size="small" color="danger" (click)="deleteArticle(article.id)">
+            <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+
+
+        <!-- Comments -->
+        <ion-list *ngIf="commentsMap[article.id]" lines="none">
+          <ion-item *ngFor="let comment of commentsMap[article.id]">
+            <ion-label>
+              <h3>{{ comment.user?.name || comment.user?.login }}</h3>
+              <p>{{ comment.content || comment.article_content }}</p>
+            </ion-label>
+
+            <ion-button fill="clear" size="small" (click)="toggleLike(comment)">
+              <ion-icon slot="icon-only" [name]="comment.likedByUser ? 'heart' : 'heart-outline'"></ion-icon>
+              <span class="ion-padding-start">{{ comment.likes || 0 }}</span>
+            </ion-button>
+
+            <ion-button *ngIf="isCommentOwner(comment)" (click)="editComment(comment)">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+
+            <!-- Boutons visibles si l'utilisateur est admin, modérateur ou auteur du commentaire -->
+            <ion-buttons slot="end" *ngIf="canManageComment(comment)">
+              <!-- Modifier (seulement pour l’auteur) -->
+
+
+              <!-- Supprimer (auteur, modérateur ou admin) -->
+              <ion-button color="danger" (click)="deleteComment(comment.id)">
+                <ion-icon name="trash-outline"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-item>
+        </ion-list>
+
+
+        <!--Add a comment -->
+        <ion-item class="ion-margin-top" lines="none">
+          <ion-input
+            [(ngModel)]="newCommentMap[article.id]"
+            placeholder="Add a comment..."
+            clearInput>
+          </ion-input>
+          <ion-button fill="outline" color="primary" (click)="submitComment(article.id)">
+            Post
+          </ion-button>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!-- No article-->
+  <ng-template #noArticle>
+    <ion-text color="medium">
+      <p>There is no article for this feed.</p>
+    </ion-text>
+  </ng-template>
+
+</ion-content>

@@ -4,6 +4,9 @@
     <ion-buttons slot="start">
       <ion-menu-button menu="main-menu"></ion-menu-button>
     </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -26,15 +29,15 @@
       </ion-item>
 
       <ion-item>
-        <ion-label position="floating">Rôle</ion-label>
+        <ion-label position="floating">Role</ion-label>
         <ion-select formControlName="role" required>
-          <ion-select-option value="student">Student</ion-select-option>
+          <ion-select-option value="user">User</ion-select-option>
           <ion-select-option value="moderator">Moderator</ion-select-option>
           <ion-select-option value="admin">Administrator</ion-select-option>
         </ion-select>
       </ion-item>
 
-      <ion-button expand="full" (click)="createUser()">Créer l'utilisateur</ion-button>
+      <ion-button expand="full" (click)="createUser()">Create user</ion-button>
     </form>
   </div>
 </ion-content>

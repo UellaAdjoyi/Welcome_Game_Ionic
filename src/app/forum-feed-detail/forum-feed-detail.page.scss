@@ -1,0 +1,26 @@
+ion-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: blue;
+}
+
+ion-card-subtitle {
+  color: var(--ion-color-medium);
+  font-size: 0.9rem;
+}
+
+ion-button {
+  margin-left: 4px;
+}
+
+.custom-card {
+  --background: #e8e6e6; // gris clair
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-card-description {
+  --background: #e8e6e6;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}

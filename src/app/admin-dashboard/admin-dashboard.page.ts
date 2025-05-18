@@ -19,7 +19,7 @@ export class AdminDashboardPage implements OnInit {
   stats = {
     totalUsers: 0,
     totalPosts: 0,
-    totalEvents: 0,
+    totalTasks: 0,
   };
   currentUserId: number = 0;
 
@@ -130,6 +130,39 @@ export class AdminDashboardPage implements OnInit {
     });
   }
 
+
+  goToCreateUser() {
+    this.router.navigate(['/sign-in']);
+  }
+
+  async confirmDeleteUser(userId: number) {
+    const alert = await this.alertController.create({
+      header: 'Confirmation',
+      message: 'Are you sure you want to delete this user?',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel'
+        },
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            this.authService.deleteUser(userId).subscribe(() => {
+              this.showToast('User deleted successfully.');
+              this.loadUsers();
+              this.loadDashboardStats();
+              this.loadTaskStats();
+            });
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+
   async showToast(message: string) {
     const toast = await this.toastController.create({
       message,
@@ -139,8 +172,8 @@ export class AdminDashboardPage implements OnInit {
     toast.present();
   }
 
-  goToCreateUser() {
-    this.router.navigate(['/sign-in']);
-  }
+  goToManageUser() {
+    this.router.navigate(['/validate-missions']);
 
+  }
 }

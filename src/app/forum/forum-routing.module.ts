@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {ForumFeedDetailPage} from "../forum-feed-detail/forum-feed-detail.page";
 
 import { ForumPage } from './forum.page';
 

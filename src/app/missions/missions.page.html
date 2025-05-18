@@ -1,0 +1,25 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Missions</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card *ngFor="let mission of missions" class="ion-margin-bottom custom-card-missions">
+    <ion-card-header>{{ mission.title }}</ion-card-header>
+    <ion-card-content>
+      <p>{{ mission.description }}</p>
+      <input type="file" (change)="onFileChange($event)">
+      <ion-button expand="block" (click)="submit(mission.id)">Add a proof</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-button *ngIf="userRole === 'admin' || userRole === 'moderator'" (click)="CreateMission()">Add a mission</ion-button>
+  <ion-button  (click)="goToMySubmissions()" color="medium">
+    My submissions
+  </ion-button>
+
+</ion-content>

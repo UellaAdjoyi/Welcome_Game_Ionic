@@ -9,47 +9,60 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Welcome Game</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-list>
+    <ion-accordion-group>
+      <ion-accordion *ngFor="let forum of forums">
+        <ion-item slot="header">
+          <ion-label>
+            <h2>{{ forum.title }}</h2>
+            <p>{{ forum.description }}</p>
+          </ion-label>
+        </ion-item>
 
-  <ion-searchbar [(ngModel)]="searchQuery" (ionInput)="filterPosts()" placeholder="Search posts...">
-  </ion-searchbar>
+        <div class="ion-padding" slot="content">
+          <!-- Always visible -->
+          <ion-button (click)="addArticle(forum.id)">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </ion-button>
 
-  <ion-content>
-    <ion-list>
-      <ion-item *ngFor="let post of filteredPosts">
-        <ion-label>
-          <h2>{{ post.title }}</h2>
-          <p>{{ post.content | slice: 0:10 }}...</p>
-          <img *ngIf="post.photo" [src]="post.photo" alt="Post Image" />
-        </ion-label>
-        <ion-button (click)="goToDetail(post.id)" slot="end">Read more</ion-button>
+          <ion-button (click)="goToForumFeedDetail(forum.id)">
+            <ion-icon name="eye-outline"></ion-icon>
+          </ion-button>
 
-        <!-- Afficher les boutons si l'utilisateur est l'auteur du post ou un admin/modérateur -->
-        <div *ngIf="post.userId === userId || hasEditPermissions">
-          <ion-button (click)="presentUpdatePostPopup(post)"><ion-icon name="create-outline"></ion-icon></ion-button>
-          <ion-button (click)="deletePost(post)"><ion-icon name="trash"></ion-icon></ion-button>
+          <!-- Button for only admin/modo -->
+          <div *ngIf="userRole === 'admin' || userRole === 'moderator'">
+            <ion-button *ngIf="userRole === 'admin'" (click)="updateFeed(forum)">
+              <ion-icon slot="start" name="create-outline"></ion-icon>
+            </ion-button>
+
+            <ion-button (click)="deleteFeed(forum.id)" color="danger">
+              <ion-icon name="trash-outline"></ion-icon>
+            </ion-button>
+          </div>
         </div>
-      </ion-item>
+      </ion-accordion>
+    </ion-accordion-group>
+  </ion-list>
 
-
-    </ion-list>
-
-    <div>
-    </div>
-  </ion-content>
-  <ion-fab vertical="bottom" horizontal="start" slot="fixed">
-    <ion-button (click)="takePhoto()">
-      <ion-icon name="camera-outline"></ion-icon>
+  <div *ngIf="userRole === 'admin' || userRole === 'moderator'" class="ion-padding">
+    <ion-button (click)="createFeed()">
+      <ion-icon name="add-outline"></ion-icon>
     </ion-button>
-    <ion-button (click)="selectImage()">
-      <ion-icon name="images-outline"></ion-icon>
-    </ion-button>
-  </ion-fab>
-  <ion-button class="floating-button" (click)="presentCreatePostPopup()">
-    <ion-icon name="add-outline"></ion-icon>
-  </ion-button>
+  </div>
+</ion-content>
+
+<!-- <div *ngIf="expandedFeeds[forum.id]">
+          <ion-card *ngFor="let article of articlesByFeed[forum.id]">
+            <ion-card-header>
+              <ion-card-title>{{ article.title }}</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <p>{{ article.forum_content }}</p>
+&lt;!&ndash;
+              <img *ngIf="article.media" [src]="apiUrl + '/' + article.media" alt="media" style="width: 100%;" />
+&ndash;&gt;
+              <small *ngIf="article.user">Par {{ article.user.name }}</small>
+            </ion-card-content>
+          </ion-card>
+        </div>-->

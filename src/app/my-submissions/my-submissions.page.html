@@ -1,0 +1,33 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>my-submissions</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()">Cancel</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="mySubmissions.length > 0">
+  <ion-list>
+    <ion-item *ngFor="let sub of mySubmissions">
+      <ion-label>
+        <h2>{{ sub.mission.title }}</h2>
+        <p>Status :
+          <span [ngClass]="{
+            'text-success': sub.status === 'accepted',
+            'text-danger': sub.status === 'rejected',
+            'text-warning': sub.status === 'pending'
+          }">{{ sub.status }}</span>
+        </p>
+        <p *ngIf="sub.points_awarded">Points : {{ sub.points_awarded }}</p>
+      </ion-label>
+      <ion-thumbnail slot="end">
+        <img [src]="'/storage/' + sub.photo" alt="proof">
+      </ion-thumbnail>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-content *ngIf="mySubmissions.length === 0">
+  <ion-text color="medium" class="ion-padding">No submissions .</ion-text>
+</ion-content>

@@ -63,4 +63,8 @@ export class ChangePasswordPage  {
     });
     await toast.present();
   }
+
+  cancel() {
+    this.navCtrl.back();
+  }
 }

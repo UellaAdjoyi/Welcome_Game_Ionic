@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
-import { ToastController } from '@ionic/angular';
+import {ModalController, NavController, ToastController} from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -19,7 +19,8 @@ export class ResetPasswordPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private navCtrl: NavController,
   ) {}
 
   ngOnInit() {
@@ -47,5 +48,9 @@ export class ResetPasswordPage implements OnInit {
           this.message = err.error?.error || 'An error occurred during password reset.';
         },
       });
+  }
+
+  cancel() {
+    this.navCtrl.back();
   }
 }

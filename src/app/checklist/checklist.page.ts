@@ -23,9 +23,7 @@ export class ChecklistPage implements OnInit {
   ) {}
 
   ngOnInit() {
-/*
-    this.checkAuthentication();
-*/
+
     this.loadUserTasks();
     this.userRole = localStorage.getItem('user_role') || '';
 
@@ -42,8 +40,6 @@ export class ChecklistPage implements OnInit {
   isCompleted(taskId: number): boolean {
     return this.completedTaskIds.includes(taskId);
   }
-
-
 
   toggleCompleted(taskId: number) {
     this.tasksService.toggleCompleted(taskId).subscribe(async () => {

@@ -19,3 +19,16 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+ion-accordion {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  --background: #000000;
+}
+ion-accordion ion-item{
+--color: black;
+}
+
+
+

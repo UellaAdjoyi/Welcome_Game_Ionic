@@ -1,0 +1,20 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>validate-missions</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-card *ngFor="let sub of submissions">
+    <img [src]="'http://127.0.0.1:8000/storage/' + sub.photo" width="100%">
+    <ion-card-header>{{ sub.user.name }} → {{ sub.mission.title }}</ion-card-header>
+    <ion-card-content>
+      <ion-select placeholder="Statut" [(ngModel)]="sub.status">
+        <ion-select-option value="accepted">Accepted</ion-select-option>
+        <ion-select-option value="rejected">Rejected</ion-select-option>
+      </ion-select>
+      <ion-input type="number" [(ngModel)]="sub.points_awarded" placeholder="Points"></ion-input>
+      <ion-button (click)="validate(sub, sub.status, sub.points_awarded)">Approve</ion-button>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

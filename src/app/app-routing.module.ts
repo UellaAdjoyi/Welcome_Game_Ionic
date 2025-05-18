@@ -57,13 +57,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./helppage/helppage.module').then((m) => m.HelppagePageModule),
   },
-  {
-    path: 'forum-detail/:id',
-    loadChildren: () =>
-      import('./forum-detail/forum-detail.module').then(
-        (m) => m.ForumDetailPageModule
-      ),
-  },
+
 
   /*{*/
     /*path: 'forgot-password',
@@ -105,6 +99,26 @@ const routes: Routes = [
     path: 'task-create',
     loadChildren: () => import('./task-create/task-create.module').then( m => m.TaskCreatePageModule)
   },
+  /*{
+    path: 'forum-feed-detail',
+    loadChildren: () => import('./forum-feed-detail/forum-feed-detail.module').then( m => m.ForumFeedDetailPageModule)
+  },*/
+  {
+    path: 'forum-feed-detail/:id',
+    loadChildren: () => import('./forum-feed-detail/forum-feed-detail.module').then(m => m.ForumFeedDetailPageModule)
+  },
+  {
+    path: 'missions',
+    loadChildren: () => import('./missions/missions.module').then( m => m.MissionsPageModule)
+  },
+  {
+    path: 'validate-missions',
+    loadChildren: () => import('./validate-missions/validate-missions.module').then( m => m.ValidateMissionsPageModule)
+  },
+  {
+    path: 'my-submissions',
+    loadChildren: () => import('./my-submissions/my-submissions.module').then( m => m.MySubmissionsPageModule)
+  }
 ];
 
 @NgModule({
