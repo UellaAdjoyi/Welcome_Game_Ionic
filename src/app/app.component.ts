@@ -48,17 +48,19 @@ export class AppComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit() {
-    const email = localStorage.getItem('user_email');
-    const role = localStorage.getItem('user_role');
-    if (email && role) {
-      this.user = { email, role };
-      this.isAdmin = role === 'admin';
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      try {
+        this.user = JSON.parse(storedUser);
+        this.isAdmin = this.user.role === 'admin';
+      } catch (e) {
+        console.error(':', e);
+        this.user = null;
+      }
     } else {
       this.user = null;
-      this.isAdmin = false;
     }
-    this.loadProfile();
-    console.log(this.user);
+
   }
 
   closeMenu() {
@@ -79,10 +81,12 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
   }
 
+/*
   isLoginOrSignIn(): boolean {
     const currentRoute = this.router.url;
     return currentRoute.includes('login') || currentRoute.includes('signIn');
   }
+*/
 
   logout() {
     this.authService.logout().subscribe({
@@ -100,14 +104,14 @@ export class AppComponent implements AfterViewInit, OnInit {
     });
   }
 
-  checkAuthentication() {
+  /*checkAuthentication() {
     const token = localStorage.getItem('auth_token');
     if (!token) {
       this.navCtrl.navigateRoot('/');
     }
-  }
+  }*/
 
-  async loadProfile() {
+ /* async loadProfile() {
     try {
       const profile = await this.authService.getProfile().toPromise();
       this.user = profile.user || profile;
@@ -116,11 +120,10 @@ export class AppComponent implements AfterViewInit, OnInit {
       console.error('Error loading profile:', error);
       this.loading = false;
     }
-  }
+  }*/
 
   @ViewChild('fileInput') fileInput!: ElementRef;
 
-  selectedFile: File | null = null;
 
   openFileChooser() {
     this.fileInput.nativeElement.click();
@@ -137,7 +140,7 @@ export class AppComponent implements AfterViewInit, OnInit {
           }
         },
         error: (err) => {
-          console.error("Erreur lors de l'upload :", err);
+          console.error(" :", err);
         }
       });
     }
@@ -145,6 +148,13 @@ export class AppComponent implements AfterViewInit, OnInit {
 
 
   getImageUrl(path: string): string {
+    if (!path) return '';
+    // complete link,
+    if (path.startsWith('http')) {
+      return path;
+    }
+    path = path.replace(/^\/+/, '');
+
     return `http://127.0.0.1:8000/${path}`;
   }
 

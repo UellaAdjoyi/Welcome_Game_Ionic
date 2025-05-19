@@ -27,6 +27,7 @@ export class LeaderboardPage implements OnInit {
       this.leaderboard = data;
     });  }
 
+/*
   loadLeaderboard() {
     this.leaderboardService.getLeaderboard().subscribe(
       (data) => {
@@ -40,4 +41,5 @@ export class LeaderboardPage implements OnInit {
       }
     );
   }
+*/
 }

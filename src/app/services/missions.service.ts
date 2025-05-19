@@ -79,4 +79,10 @@ export class MissionsService {
     return this.http.get(`${this.apiUrl}/leaderboard`, { headers });
   }
 
+  getUserPoints() {
+    const token = localStorage.getItem('auth_token');
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/points`, { headers });
+  }
 }

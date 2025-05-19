@@ -45,7 +45,7 @@ export class MissionsPage implements OnInit {
   submit(missionId: number) {
     if (this.selectedFile) {
       this.missionService.submitProof(missionId, this.selectedFile).subscribe(() => {
-        alert('Soumission envoyée');
+        alert('Submission successful');
       });
     }
   }
@@ -57,25 +57,25 @@ export class MissionsPage implements OnInit {
         {
           name: 'title',
           type: 'text',
-          placeholder: 'Titre de la mission'
+          placeholder: 'Mission title'
         },
         {
           name: 'description',
           type: 'textarea',
-          placeholder: 'Description de la mission'
+          placeholder: 'Mission description'
         }
       ],
       buttons: [
         {
-          text: 'Annuler',
+          text: 'Cancel',
           role: 'cancel'
         },
         {
-          text: 'Créer',
+          text: 'Add',
           handler: data => {
             if (!data.title || !data.description) {
-              // Affiche une erreur si un champ est vide
-              alert.message = 'Veuillez remplir tous les champs';
+              // if fields are empty
+              alert.message = 'All fields are required.';
               return false;
             }
 

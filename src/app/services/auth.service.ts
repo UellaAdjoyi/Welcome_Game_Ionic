@@ -26,9 +26,7 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/users`, data);
   }
 
-  /*login(data: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/login`, data);
-  }*/
+
   login(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login`, data).pipe(
       tap(response => {
@@ -46,7 +44,6 @@ export class AuthService {
 
   getProfile(): Observable<any> {
     const token = localStorage.getItem('auth_token');
-    console.log('Token récupéré:', token);
     if (!token) {
       return throwError('User not authenticated');
     }
