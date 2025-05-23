@@ -16,20 +16,32 @@
     </p>
   </div>
 
-  <ion-list>
-    <ion-item *ngFor="let task of tasks">
-      <ion-label>
-        <h2>{{ task.title }}</h2>
-        <p>{{ task.description }}</p>
-        <a *ngIf="task.link" [href]="task.link" target="_blank">Guide</a>
-      </ion-label>
-      <ion-checkbox
-        slot="end"
-        [checked]="task.completed"
-        (ionChange)="toggleCompleted(task)">
-      </ion-checkbox>
-    </ion-item>
-  </ion-list>
+ <ion-list>
+  <ion-item *ngFor="let task of tasks">
+    <ion-label>
+      <h2>{{ task.title }}</h2>
+      <p>{{ task.description }}</p>
+      <a *ngIf="task.link" [href]="task.link" target="_blank">Guide</a>
+    </ion-label>
+
+    <ion-checkbox
+      slot="end"
+      [checked]="task.completed"
+      (ionChange)="toggleCompleted(task)">
+    </ion-checkbox>
+
+    <!-- Administrator displays the remove button -->
+    <ion-button
+      *ngIf="userRole === 'admin'"
+      fill="clear"
+      color="danger"
+      slot="end"
+      (click)="deleteTask(task.id)">
+      remove
+    </ion-button>
+  </ion-item>
+</ion-list>
+
 
   <!-- Bouton for only  admins and mod -->
   <ion-button

@@ -64,6 +64,14 @@ export class TasksService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.get<any[]>(`${this.apiUrl}/admin/task-stats`,{headers});
   }
+  deleteTask(taskId: number) {
+  const token = localStorage.getItem('auth_token');
+  const headers = new HttpHeaders({
+    'Authorization': `Bearer ${token}`
+  });
+  return this.http.delete(`${this.apiUrl}/tasks/${taskId}`, { headers });
+}
+
 
 }
 

@@ -55,5 +55,30 @@ export class ChecklistPage implements OnInit {
   goToCreateTask() {
     this.router.navigate(['/task-create']);
   }
+  async deleteTask(taskId: number) {
+  const confirmed = confirm('Sure you want to remove this task?');
+  if (!confirmed) return;
+
+  this.tasksService.deleteTask(taskId).subscribe({
+    next: async () => {
+      const toast = await this.toastCtrl.create({
+        message: 'Task removed',
+        duration: 2000,
+        color: 'success',
+      });
+      toast.present();
+      this.loadUserTasks();
+    },
+    error: async (err) => {
+      const toast = await this.toastCtrl.create({
+        message: err.status === 403 ? 'No permission to remove tasks' : 'Failed to remove',
+        duration: 2000,
+        color: 'danger',
+      });
+      toast.present();
+    }
+  });
+}
+
 
 }
