@@ -155,7 +155,7 @@ export class AppComponent implements AfterViewInit, OnInit {
     }
     path = path.replace(/^\/+/, '');
 
-    return `http://127.0.0.1:8000/${path}`;
+    return `http://serv-gi-57.utbm.fr/api/${path}`;
   }
 
 
