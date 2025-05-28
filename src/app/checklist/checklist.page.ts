@@ -55,6 +55,7 @@ export class ChecklistPage implements OnInit {
   goToCreateTask() {
     this.router.navigate(['/task-create']);
   }
+
   async deleteTask(taskId: number) {
   const confirmed = confirm('Sure you want to remove this task?');
   if (!confirmed) return;

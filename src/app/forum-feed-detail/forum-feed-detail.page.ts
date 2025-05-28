@@ -192,10 +192,10 @@ export class ForumFeedDetailPage implements OnInit {
           handler: (data) => {
             if (!data.content.trim()) return false;
 
-            this.forumService.updateComment(comment.id, { content: data.content })
+            this.forumService.updateComment(comment.id, { article_content: data.content })
               .subscribe(() => {
-                this.showToast('Comment updated');
                 this.loadComments(comment.article_id);
+                this.showToast('Comment updated');
               });
 
             return true;

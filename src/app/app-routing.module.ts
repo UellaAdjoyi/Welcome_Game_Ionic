@@ -28,11 +28,6 @@ const routes: Routes = [
       import('./maps/maps.module').then((m) => m.MapsPageModule),
   },
   {
-    path: 'friends',
-    loadChildren: () =>
-      import('./friends/friends.module').then((m) => m.FriendsPageModule),
-  },
-  {
     path: 'forum',
     loadChildren: () =>
       import('./forum/forum.module').then((m) => m.ForumPageModule),
