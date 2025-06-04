@@ -160,8 +160,6 @@ export class ForumFeedDetailPage implements OnInit {
         }
       ]
     });
-
-    // Il manquait CETTE ligne
     await alert.present();
   }
 

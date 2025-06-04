@@ -8,7 +8,7 @@
 };*/
 export const environment = {
   production: false,
-  apiUrl:'http://serv-gi-57.utbm.fr/api'
+  apiUrl:'http://serv-gi-57.utbm.fr/Backend_WelcomeGame/public/api'
 ,
 };
 
